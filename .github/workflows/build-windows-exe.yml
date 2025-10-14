@@ -27,16 +27,17 @@ jobs:
       - name: Package EXE with jpackage
         run: |
           jpackage `
-            --input . `
-           --main-jar RoboSFTP-1.0-SNAPSHOT-shaded.jar `
+            --input target `
+            --main-jar RoboSFTP-1.0-SNAPSHOT-shaded.jar `
             --main-class org.robo.core.MainApp `
             --name "RoboSFTP" `
             --type exe `
-            --icon app.ico `
+            --icon icon.ico `
             --java-options "--module-path $env:USERPROFILE\javafx\javafx-sdk-17.0.16\lib --add-modules javafx.controls,javafx.fxml" `
             --win-menu `
             --win-shortcut `
             --vendor "Mahesh"
+      
 
       - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
