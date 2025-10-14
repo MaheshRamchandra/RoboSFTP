@@ -24,6 +24,10 @@ jobs:
           Invoke-WebRequest https://download2.gluonhq.com/openjfx/17.0.16/openjfx-17.0.16_windows-x64_bin-sdk.zip -OutFile javafx.zip
           Expand-Archive javafx.zip -DestinationPath $env:USERPROFILE\javafx
 
+      - name: Build project with Maven
+        run: |
+          mvn -B clean package --file pom.xml
+
       - name: Build custom runtime image with jlink
         run: |
           if (Test-Path "custom-runtime") { Remove-Item -Recurse -Force "custom-runtime" }
