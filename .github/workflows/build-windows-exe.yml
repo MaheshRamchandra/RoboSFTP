@@ -28,7 +28,7 @@ jobs:
         run: |
           jpackage `
             --input . `
-            --main-jar RoboSFTP-shaded.jar `
+           --main-jar RoboSFTP-1.0-SNAPSHOT-shaded.jar `
             --main-class org.robo.core.MainApp `
             --name "RoboSFTP" `
             --type exe `
