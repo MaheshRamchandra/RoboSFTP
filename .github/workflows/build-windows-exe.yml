@@ -32,6 +32,10 @@ jobs:
             --add-modules java.base,javafx.controls,javafx.fxml `
             --output custom-runtime
 
+      - name: Copy JAR from target folder
+        run: |
+          Copy-Item -Path "target\RoboSFTP-1.0-SNAPSHOT.jar" -Destination "RoboSFTP-1.0-SNAPSHOT.jar"
+
       - name: Package EXE with jpackage
         run: |
           jpackage `
