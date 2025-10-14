@@ -26,6 +26,7 @@ jobs:
 
       - name: Build custom runtime image with jlink
         run: |
+          if (Test-Path "custom-runtime") { Remove-Item -Recurse -Force "custom-runtime" }
           jlink `
             --module-path "$env:JAVA_HOME\jmods;$env:USERPROFILE\javafx\javafx-sdk-17.0.16\lib" `
             --add-modules java.base,javafx.controls,javafx.fxml `
