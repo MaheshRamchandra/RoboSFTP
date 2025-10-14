@@ -1,0 +1,76 @@
+/* ======== GLOBAL APP STYLES ======== */
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: linear-gradient(to bottom right, #f9f9fb, #ececf1);
+}
+
+/* ======== HEADER ======== */
+.label-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 10 0 20 0;
+}
+
+/* ======== BUTTONS ======== */
+.button {
+    -fx-background-color: #0078d7;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 8 18;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: #005fa3;
+}
+
+/* ======== TEXTFIELDS & CHOICEBOX ======== */
+.text-field, .combo-box, .file-chooser {
+    -fx-background-color: white;
+    -fx-border-color: #c8c8c8;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 6;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #0078d7;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,120,215,0.3), 3, 0, 0, 1);
+}
+
+/* ======== SECTION LABELS ======== */
+.section-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #37474f;
+    -fx-padding: 12 0 6 0;
+}
+
+/* ======== STATUS AREA ======== */
+.text-area {
+    -fx-control-inner-background: #1e1e1e;
+    -fx-text-fill: #d4d4d4;
+    -fx-font-family: monospace;
+    -fx-font-size: 12px;
+    -fx-border-color: #333;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+/* ======== FILE PICKER ======== */
+.file-field {
+    -fx-border-color: #bdbdbd;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+/* ======== TOOLTIP ======== */
+.tooltip {
+    -fx-background-color: #2d2d30;
+    -fx-text-fill: #fff;
+    -fx-font-size: 11px;
+    -fx-background-radius: 4;
+}

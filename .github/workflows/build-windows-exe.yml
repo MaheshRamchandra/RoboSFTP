@@ -1,0 +1,45 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:     # You can trigger manually from GitHub
+  push:
+    branches: [ main ]
+
+jobs:
+  build-windows-exe:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '20'
+
+      - name: Download JavaFX SDK
+        run: |
+          Invoke-WebRequest https://download2.gluonhq.com/openjfx/21.0.1/openjfx-17.0.16_windows-x64_bin-sdk.zip -OutFile javafx.zip
+          Expand-Archive javafx.zip -DestinationPath $env:USERPROFILE\javafx
+
+      - name: Package EXE with jpackage
+        run: |
+          jpackage `
+            --input . `
+            --main-jar RoboSFTP-shaded.jar `
+            --main-class org.robo.core.MainApp `
+            --name "RoboSFTP" `
+            --type exe `
+            --icon app.ico `
+            --java-options "--module-path $env:USERPROFILE\javafx\javafx-sdk-17.0.16\lib --add-modules javafx.controls,javafx.fxml" `
+            --win-menu `
+            --win-shortcut `
+            --vendor "Mahesh"
+
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RoboSFTP-windows-exe
+          path: RoboSFTP*.exe

@@ -1,0 +1,98 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
+
+<VBox xmlns="http://javafx.com/javafx/17.0.16"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.robo.ui.UIController"
+      stylesheets="@/css/styles.css"
+      spacing="8">
+
+
+
+    <padding>
+        <Insets top="12" right="12" bottom="12" left="12"/>
+    </padding>
+
+    <HBox spacing="8">
+        <Label text="Excel:"/>
+        <TextField fx:id="tfExcel" editable="false" prefWidth="420"/>
+        <Button fx:id="btnChooseExcel" text="Choose Excel"/>
+    </HBox>
+
+    <HBox spacing="8">
+        <Label text="Sheet:"/>
+        <ComboBox fx:id="cbSheet" prefWidth="200"/>
+        <Label text="Scenario:"/>
+        <ComboBox fx:id="cbScenario" prefWidth="200"/>
+    </HBox>
+
+    <HBox spacing="8">
+        <Label text="Encode fields (.txt):"/>
+        <TextField fx:id="tfEncode" editable="false" prefWidth="420"/>
+        <Button fx:id="btnChooseEncode" text="Choose"/>
+    </HBox>
+
+    <HBox spacing="8">
+        <Button fx:id="btnGenerate" text="Generate TXT" />
+        <Button fx:id="btnEncrypt" text="Encrypt (.enc)" />
+        <Label text="AES Key (hex or leave blank to use passphrase):"/>
+        <PasswordField fx:id="pfAesKey" prefWidth="200"/>
+        <Label text="Secret Key (Hex/UTF-8):"/>
+        <TextField fx:id="tfSecretKey" prefWidth="300"/>
+        <Label text="Initialization Vector (hex)"/>
+        <TextField fx:id="tfIv" prefWidth="200"/>
+
+    </HBox>
+
+    <TitledPane text="SFTP Settings (optional)" collapsible="true" expanded="false">
+        <VBox spacing="6">
+            <padding>
+                <Insets top="8" right="8" bottom="8" left="8"/>
+            </padding>
+
+            <HBox spacing="8">
+                <Label text="Host:"/>
+                <TextField fx:id="tfHost" prefWidth="200"/>
+                <Label text="Port:"/>
+                <TextField fx:id="tfPort" text="22" prefWidth="80"/>
+            </HBox>
+            <HBox spacing="8">
+                <Label text="Username:"/>
+                <TextField fx:id="tfUser" prefWidth="200"/>
+                <Label text="Password:"/>
+                <PasswordField fx:id="pfPassword" prefWidth="200"/>
+            </HBox>
+            <HBox spacing="8">
+                <Label text="Or Private Key:"/>
+                <TextField fx:id="tfPrivateKey" editable="false" prefWidth="420"/>
+                <Button fx:id="btnChooseKey" text="Choose Key"/>
+            </HBox>
+            <HBox spacing="8">
+                <Label text="Remote Dir:"/>
+                <TextField fx:id="tfRemoteDir" text="/" prefWidth="200"/>
+                <Button fx:id="btnUpload" text="Upload"/>
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <HBox spacing="8">
+        <Label text="Output Path:"/>
+        <TextField fx:id="tfOutput" editable="false" prefWidth="520"/>
+        <Button fx:id="btnOpenFolder" text="Open Folder"/>
+    </HBox>
+
+    <ProgressBar fx:id="progressBar" prefWidth="700" progress="0"/>
+
+    <Label text="Log:"/>
+    <TextArea fx:id="taLog" prefRowCount="8" wrapText="true"/>
+
+</VBox>
