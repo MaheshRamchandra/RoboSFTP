@@ -1,7 +1,7 @@
 name: Build Windows EXE
 
 on:
-  workflow_dispatch:     # You can trigger manually from GitHub
+  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -10,25 +10,47 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      # 1️⃣ Checkout the repo
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2️⃣ Set up JDK 20
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '20'
 
+      # 3️⃣ Set up Maven cache
+      - name: Set up Maven
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '20'
+          cache: maven
+
+      # 4️⃣ Build the project and produce shaded JAR
+      - name: Build Shaded JAR with Maven
+        run: mvn clean package
+
+      # 5️⃣ Prepare JAR for jpackage (version-independent)
+      - name: Prepare JAR for jpackage
+        run: |
+          mkdir package
+          Copy-Item target\RoboSFTP*-shaded*.jar package\
+
+      # 6️⃣ Download JavaFX SDK 17.0.16
       - name: Download JavaFX SDK
         run: |
           Invoke-WebRequest https://download2.gluonhq.com/openjfx/17.0.16/openjfx-17.0.16_windows-x64_bin-sdk.zip -OutFile javafx.zip
           Expand-Archive javafx.zip -DestinationPath $env:USERPROFILE\javafx
 
+      # 7️⃣ Package EXE with jpackage
       - name: Package EXE with jpackage
         run: |
           jpackage `
-            --input target `
-            --main-jar RoboSFTP-1.0-SNAPSHOT-shaded.jar `
+            --input package `
+            --main-jar RoboSFTP*-shaded*.jar `
             --main-class org.robo.core.MainApp `
             --name "RoboSFTP" `
             --type exe `
@@ -37,8 +59,8 @@ jobs:
             --win-menu `
             --win-shortcut `
             --vendor "Mahesh"
-      
 
+      # 8️⃣ Upload the EXE artifact
       - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
         with:
