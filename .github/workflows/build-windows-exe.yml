@@ -19,37 +19,28 @@ jobs:
           distribution: 'temurin'
           java-version: '20'
 
-      - name: Set up Maven
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '20'
-          cache: maven
-
-      - name: Build Shaded JAR with Maven
-        run: mvn clean package
-
-      # Copy the exact JAR to a package folder
-      - name: Prepare JAR for jpackage
-        run: |
-          mkdir package
-          Copy-Item target\RoboSFTP-1.0-SNAPSHOT.jar package\
-
       - name: Download JavaFX SDK
         run: |
           Invoke-WebRequest https://download2.gluonhq.com/openjfx/17.0.16/openjfx-17.0.16_windows-x64_bin-sdk.zip -OutFile javafx.zip
           Expand-Archive javafx.zip -DestinationPath $env:USERPROFILE\javafx
 
+      - name: Build custom runtime image with jlink
+        run: |
+          jlink `
+            --module-path "$env:JAVA_HOME\jmods;$env:USERPROFILE\javafx\javafx-sdk-17.0.16\lib" `
+            --add-modules java.base,javafx.controls,javafx.fxml `
+            --output custom-runtime
+
       - name: Package EXE with jpackage
         run: |
           jpackage `
-            --input package `
+            --input . `
             --main-jar RoboSFTP-1.0-SNAPSHOT.jar `
             --main-class org.robo.core.MainApp `
             --name "RoboSFTP" `
             --type exe `
             --icon icon.ico `
-            --java-options "--module-path $env:USERPROFILE\javafx\javafx-sdk-17.0.16\lib --add-modules javafx.controls,javafx.fxml" `
+            --runtime-image custom-runtime `
             --win-menu `
             --win-shortcut `
             --vendor "Mahesh"
