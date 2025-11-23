@@ -1,0 +1,2761 @@
+[
+  {
+    "Name": "CreatedBy",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Example": "SHHQ\\tan0012t,",
+    "Description": "Domain\\ADID",
+    "section": null
+  },
+  {
+    "Name": "CreatedDate",
+    "Required": "Yes",
+    "Type": "Datetime",
+    "Example": "2020-08-20T07:48:57",
+    "Description": "Created date and time",
+    "section": null
+  },
+  {
+    "Name": "ExternalId",
+    "Required": "Yes",
+    "Type": "String",
+    "Example": "Emr-001103",
+    "Description": "Application source identifier (Unique Id per record) for troubleshooting purpose",
+    "section": null
+  },
+  {
+    "Name": "CenterCode",
+    "Required": "Yes",
+    "Type": "String",
+    "Example": "KTPH_Inpatient",
+    "Description": "This will be provided by OneRehab team before onboarding.",
+    "section": null
+  },
+  {
+    "Name": "Section 1 Start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – ORS1.",
+    "Example": "ORS1",
+    "Description": "Indicates the start of Section 1",
+    "section": null
+  },
+  {
+    "Name": "NRIC/FIN",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Either FIN or NRIC\nOnly NRIC/FIN which starts with the following prefix values:\nS,F,T,G,M",
+    "Example": "S3000514G",
+    "Description": "Validation will be enforced NRIC & FIN submitted, based on MHA algorithm checksum.",
+    "section": null
+  },
+  {
+    "Name": "DateOfBirth",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "1955-09-11",
+    "Description": "Patient’s Date of Birth",
+    "section": null
+  },
+  {
+    "Name": "IfEstimate",
+    "Required": "No",
+    "Type": "Boolean",
+    "Rule": "Allowed values:\nTrue,\nFalse",
+    "Example": "False",
+    "Description": "-",
+    "section": null
+  },
+  {
+    "Name": "FullName",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Max 250 characters",
+    "Example": "OneRehab Patient",
+    "Description": "Patient's Name",
+    "section": null
+  },
+  {
+    "Name": "Gender",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values: \n\nM, //Male\nF //Female",
+    "Example": "M",
+    "Description": "Patient’s Gender",
+    "section": null
+  },
+  {
+    "Name": "IdentificationType",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n\nSP, //Singapore Pink\nSB, //Singapore Blue\nF, //Foreigner\nNA //Not Available",
+    "Example": "SP",
+    "Description": "Patient’s Identification Type",
+    "section": null
+  },
+  {
+    "Name": "Race",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "For all races that doesn’t fall within the allowed values, please specify as ‘O’\n\nAllowed values:\n\nC, //Chinese\nM, //Malay\nI, //Indian\nO, //Others\n\n[All other race values from NGEMR will be mapped to Others]",
+    "Example": "C",
+    "Description": "Patient's Race",
+    "section": null
+  },
+  {
+    "Name": "EmploymentStatus",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "For all EmploymentStatus that doesn’t fall within the allowed values, please specify as ‘O’\n\nAllowed values:\n\nE, //Employed\nU, //Unemployed\nSE, //Self-employed\nH, //Homemaker\nR, //Retiree\nO //Others\n\n[Employed (Full Time, Part Time,)\nUnemployed (Not Employed)\nSelf-employed (Self Employed)\nHomemaker\nRetiree (Retired)\nOthers (One Active Miltary Duty, Student - Full Time, Student Part Time, Unknown)]\n\nValues in bracket are from NGEMR",
+    "Example": "E",
+    "Description": "Patient's Employment status prior to this episode",
+    "section": null
+  },
+  {
+    "Name": "LiftLanding",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Allowed values: \n\nY, //Yes\nN //No",
+    "Example": "Y",
+    "Description": "Patient's residence lift landing presence",
+    "section": null
+  },
+  {
+    "Name": "LiftLandingFlight",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "If LiftLanding option is ‘No’\n\nAllowed values: \n\n1 //OneFlight\n2 //TwoFlights\n3 //ThreeFlights\n4 //Others",
+    "Example": "2",
+    "Description": "Patient’s residence lift landing flight count",
+    "section": null
+  },
+  {
+    "Name": "LiftLandingFlightOthersComments",
+    "Required": "No",
+    "Type": "String - Encoded",
+    "Rule": "If LiftLandingFlight option is ‘4’\n\nMax 254 characters",
+    "Example": "6",
+    "Description": "Patient's residence lift landing flight count comments",
+    "section": null
+  },
+  {
+    "Name": "PresenceOfSteps",
+    "Required": "No",
+    "Type": "Boolean",
+    "Rule": "Allowed values:\nTrue,// Yes\nFalse// No",
+    "Example": "True",
+    "Description": "Patient’s residence presence of steps",
+    "section": null
+  },
+  {
+    "Name": "LocationOfSteps",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "If PresenceOfSteps option is ‘True’\n\nAllowed values (Multiple):\nOME, //Outside Main Entry\nOT, //Outside Toilet\nO //Others",
+    "Example": "OME, O",
+    "Description": "Patient’s residence location of steps",
+    "section": null
+  },
+  {
+    "Name": "LocationOfStepsComments",
+    "Required": "No",
+    "Type": "String - Encoded",
+    "Rule": "If LocationOfSteps option is ‘O’\n\nMax 254 characters",
+    "Example": "Near bedroom",
+    "Description": "Patient’s residence location of steps comments",
+    "section": null
+  },
+  {
+    "Name": "NumberOfStepsOutsideMainEntry",
+    "Required": "No",
+    "Type": "Integer",
+    "Rule": "If LocationOfSteps contains ‘OME’\n\nNote: Integer cannot be lesser than 1 and cannot consist of characters/ strings",
+    "Example": "5",
+    "Description": "Patient’s residence number of steps outside main entry count",
+    "section": null
+  },
+  {
+    "Name": "NumberOfStepsOutsideToilet",
+    "Required": "No",
+    "Type": "Integer",
+    "Rule": "If LocationOfSteps contains ‘OT’ \n\nNote: Integer cannot be lesser than 1 and cannot consist of characters/ strings",
+    "Example": "15",
+    "Description": "Patient’s residence number of steps outside toilet count",
+    "section": null
+  },
+  {
+    "Name": "NumberOfStepsOtherLocation",
+    "Required": "No",
+    "Type": "Integer",
+    "Rule": "If LocationOfSteps contains ‘O’ \n\nNote: Integer cannot be lesser than 1 and cannot consist of characters/ strings",
+    "Example": "7",
+    "Description": "Patient’s residence number of steps other location",
+    "section": null
+  },
+  {
+    "Name": "Kerb/Threshold",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Allowed values: \n\nY //Yes\nN //No",
+    "Example": "N",
+    "Description": "Patient’s residence presence of Kerb or Threshold",
+    "section": null
+  },
+  {
+    "Name": "ReferringInstitution",
+    "Required": "No",
+    "Type": "String - Encoded",
+    "Rule": "Name of Referring Institution",
+    "Example": "Sample GP Pte Ltd",
+    "Description": "Name of referring institution",
+    "section": null
+  },
+  {
+    "Name": "ReferralSourceSetting",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n\nAHI //Acute Hospital-Inpatient\nED //Acute Hospital - Emergency Department\nSOC // Acute Hospital - Specialist Outpatient Clinic\nCHI //Community Hospital - Inpatient\nRDCSCCAAH // Day Rehab Centre/Senior Care Centre/Active Ageing Hub\nPC //Polyclinic\nGP //GP\nNH //Nursing Home\nSAC // Senior Activity Centre\nWISR //Walk-in/Self-referral\nOTHER // Other. Please Specify;",
+    "Example": "GP",
+    "Description": "Referring institution type",
+    "section": null
+  },
+  {
+    "Name": "ReferralSourceSettingOther",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "If ReferralSourceSetting option is OTHER’\n\nMax 254 characters",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "PremorbidBADLStatus",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Allowed values (Multiple):\n\nIIBADLS // Independent in BADLs \nNAIBADLS // Needs Assistance In BADLs \nDIBADLS //Dependent In BADLs \nO// Other",
+    "Example": "O, DIBADLS",
+    "Description": "Patient’s Premorbid BADL Status",
+    "section": null
+  },
+  {
+    "Name": "PremorbidIADLStatus",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Allowed values (Multiple):\n\nIIIADLS // Independent In IADLs\nNAIIADLS //Needs Assistance In IADLS\nO //Other",
+    "Example": "O, IIIADLS",
+    "Description": "Patient's Premorbid IADL Status",
+    "section": null
+  },
+  {
+    "Name": "PremorbidMobilityStatusComm",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values: \nWI //Walk independently \nWA //Walk assisted\nWID //Walk independently; does not use PMA \nWIIM //Walk independently; independent with PMA\nWAD //Walk assisted; does not use PMA \nWAI //Walk assisted; independent with PMA \nWANA //Walk assisted; needs assistance with PMA \nNIP //Not able to walk; independent with PMA \nNAP // Not able to walk; assisted with PMA \nB //Bedbound\nO //Others\nH //Homebound",
+    "Example": "WID",
+    "Description": "Patient's Premorbit mobility status in community",
+    "section": null
+  },
+  {
+    "Name": "PremorbidUseOfMobilityAid",
+    "Required": "No (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "If PremorbidMobilityStatusComm is ‘H’ then this is EMPTY \n\nAllowed values (Multiple): \nIf ‘N//None’ is selected then other values will not be allowed.\n\nN //None\nU //Umbrella\nWS //Walking Stick\nNBQS //Narrow base Quad Stick\nBBQS //Broad base Quad Stick\nC //Crutches\nWF //Walking Frame\nRF //Rollator Frame\nWC //Wheelchair\nMW //Motorised wheelchair\nMS //Motorised scooter\nO //Others",
+    "Example": "MS, U, O",
+    "Description": "Patient's Premorbid use of mobility aids in the community",
+    "section": null
+  },
+  {
+    "Name": "PremorbidMobilityStatusHome",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Allowed values: \n\nWI //Walk independently \nWA //Walk assisted \nNIP //Not able to walk; independent with PMA \nNAP //Not able to walk; assisted with PMA \nB //Bedbound \nO //Others",
+    "Example": "NAP",
+    "Description": "Patient's premorbid mobility status at home",
+    "section": null
+  },
+  {
+    "Name": "PremorbidMobilityAidsHome",
+    "Required": "No (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "If PremorbidMobilityStatusHome is ‘B’ then THIS IS EMPTY\n\nAllowed values (Multiple):\nIf ‘N//None’ is selected then other values will not be allowed.\n\nN //None\nF //Furniture walk\nU //Umbrella\nWS //Walking Stick\nNBQS //Narrow base Quad Stick\nBBQS //Broad base Quad Stick\nC //Crutches\nWF //Walking Frame\nRF //Rollator Frame\nWC //Wheelchair\nMW //Motorised wheelchair\nMS //Motorised scooter\nO //Others",
+    "Example": "C, F, U",
+    "Description": "Premorbid use of mobility aids at home",
+    "section": null
+  },
+  {
+    "Name": "PostalCode",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Valid 6-digit postal code",
+    "Example": "554910",
+    "Description": "Postal Code (6 digits)",
+    "section": null
+  },
+  {
+    "Name": "Address",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Address, Max 500 characters",
+    "Example": "6 Serangoon North Ave 5, #01-01/02, Singapore",
+    "Description": "Patient’s address \nBlock Number, Street Name, Floor Number, Unit Number, Building Name (if applicable)",
+    "section": null
+  },
+  {
+    "Name": "RDGPrimary",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Refer to IT Care form Appendix A for RDG codes definition: \n\nAllowed values:\n\nStroke111 // 1.11\nStroke112 //1.12\nStroke113 //1.13\nStroke121 //1.21\nStroke122 //1.22\nStroke123 //1.23\nSCI211//2.11\nSCI212 //2.12\nSCI221 //2.21\nSCI222 //2.22\nSCI231 //2.31\nHIP311 //3.11\nHIP312 //3.12\nHIP313 //3.13\nAMP411 //4.11\nAMP412 // 4.12\nAMP413 //4.13\nAMP414 //4.14\nAMP421 //4.21\nAMP422 //4.22\nAMP423 //4.23\nAMP424 //4.24\nMSK511 //5.11\nMSK512 //5.12\nMSK513 //5.13\nMSK521 //5.21\nDECON61 //6.1\nDECON62 //6.2\nDECON63 //6.3",
+    "Example": "Stroke111",
+    "Description": "Patient primary RDG",
+    "section": null
+  },
+  {
+    "Name": "RDGPrimaryOther",
+    "Required": "No (Refer to rule)",
+    "Type": "String",
+    "Rule": "To be provided if RDG code is “17”\n\nMax 500 characters",
+    "Example": "",
+    "Description": "Patient primary RDG Other Rehabilitation Diagnosis",
+    "section": null
+  },
+  {
+    "Name": "RDGPrimaryFrailty",
+    "Required": "No (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if RDGSecondary1 is \"DECON63\"\n\nAllowed Values:\nCFS //Clinical Frailty Scale, \nFI //Frailty Index, \nFFC //Fried Frailty Criteria, \nO //Other",
+    "Example": "FI",
+    "Description": "Patient primary RDG What method was used to diagnose frailty?",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondary1",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "[Refer to IT Care form Appendix A for RDG codes definition.]\n\nAllowed values:\n\nStroke111 // 1.11\nStroke112 //1.12\nStroke113 //1.13\nStroke121 //1.21\nStroke122 //1.22\nStroke123 //1.23\nSCI211//2.11\nSCI212 //2.12\nSCI221 //2.21\nSCI222 //2.22\nSCI231 //2.31\nHIP311 //3.11\nHIP312 //3.12\nHIP313 //3.13\nAMP411 //4.11\nAMP412 // 4.12\nAMP413 //4.13\nAMP414 //4.14\nAMP421 //4.21\nAMP422 //4.22\nAMP423 //4.23\nAMP424 //4.24\nMSK511 //5.11\nMSK512 //5.12\nMSK513 //5.13\nMSK521 //5.21\nDECON61 //6.1\nDECON62 //6.2\nDECON63 //6.3",
+    "Example": "",
+    "Description": "Patient secondary RDG x",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryOther1",
+    "Required": "No",
+    "Type": "String",
+    "Rule": "To be provided if RDG code is “17”, \n\nMax 500 characters",
+    "Example": "",
+    "Description": "Patient secondary RDG Other Rehabilitation Diagnosis",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryFrailty1",
+    "Required": "No (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if RDGSecondary1 is \"DECON63\"\n\nAllowed Values:\nCFS //Clinical Frailty Scale, \nFI //Frailty Index, \nFFC //Fried Frailty Criteria, \nO //Other",
+    "Example": "",
+    "Description": "Patient secondary RDG",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondary2",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Refer to RDGPrimary field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryfield1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryOther2",
+    "Required": "No",
+    "Type": "string",
+    "Rule": "Refer to RDGPrimaryOther field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryOthers1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryFrailty2",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Refer to RDGPrimaryFraility field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryFraility1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondary3",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Refer to RDGPrimary field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryfield1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryOther3",
+    "Required": "No",
+    "Type": "string",
+    "Rule": "Refer to RDGPrimaryOther field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryOthers1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryFrailty3",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Refer to RDGPrimaryFraility field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryFraility1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondary4",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Refer to RDGPrimary field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryfield1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryOther4",
+    "Required": "No",
+    "Type": "string",
+    "Rule": "Refer to RDGPrimaryOther field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryOthers1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryFrailty4",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Refer to RDGPrimaryFraility field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryFraility1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondary5",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Refer to RDGPrimary field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryfield1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryOther5",
+    "Required": "No",
+    "Type": "string",
+    "Rule": "Refer to RDGPrimaryOther field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryOthers1 field",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryFrailty5",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Refer to RDGPrimaryFraility field",
+    "Example": "",
+    "Description": "Refer to RDGSecondaryFraility1 field",
+    "section": null
+  },
+  {
+    "Name": "Section 1 End",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – ORS1END",
+    "Example": "ORS1END",
+    "Description": "Indicates the end of Section 1",
+    "section": null
+  },
+  {
+    "Name": "Section 2 Start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder - ORS2",
+    "Example": "ORS2",
+    "Description": "Indicates the start of Section 2",
+    "section": null
+  },
+  {
+    "Name": "DateOfAdmission",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "1955-09-11",
+    "Description": "Also known as first Rehab session in community",
+    "section": null
+  },
+  {
+    "Name": "SettingClassification",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed Values:\n\nAHI //Acute Hospital – Inpatient\nAHAHP //Acute Hospital – AHP Outpatient\nCHI //Community Hospital - Inpatient\nDRC //Day Rehab Centre\nSCC //Senior Care Centre\nAAH //Active Ageing Hub\nPC //Polyclinic\nHHSHT //Home Healthcare Services - Home Therapy \nNH //Nursing Home",
+    "Example": "AHI",
+    "Description": "Classification of setting",
+    "section": null
+  },
+  {
+    "Name": "RelevantMedicalHistory",
+    "Required": "No",
+    "Type": "String - Encoded",
+    "Rule": "Varchar max 2000 char",
+    "Example": "This patient has good health for past 24 months",
+    "Description": "For qualified clinician (Doctors) to enter relevant medical history to be passed down to downstream service providers",
+    "section": null
+  },
+  {
+    "Name": "CaregiverStatusOnAdmission",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Allowed Values: \n\nD //Does not need caregiver\nNLC //Needs caregiver, live-in caregiver(s) available \nNAC //Needs caregiver, ad-hoc caregiver(s) available \nNNC //Needs caregiver, no available caregiver \nNA //Not applicable",
+    "Example": "D",
+    "Description": "Caregiver status on admission",
+    "section": null
+  },
+  {
+    "Name": "RelationshipOfPrimaryCaregiver",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String",
+    "Rule": "[To be provided only if CaregiverStatusOnAdmission is ‘NLC’ or ‘NAC’]\n\nAllowed Values: \nSE //Self \nN //No caregiver \nS //Spouse \nC //Children \nCI//Children-in-law\nP//Parent \nSI //Sibling \nGC //Grandchildren \nDH //Domestic helper \nO //Others",
+    "Example": "SE",
+    "Description": "Relationship of primary caregiver",
+    "section": null
+  },
+  {
+    "Name": "Section 2 End",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder - ORS2END",
+    "Example": "ORS2END",
+    "Description": "Indicates the end of Section 2",
+    "section": null
+  },
+  {
+    "Name": "Section 3 Start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder - ORS3",
+    "Example": "ORS3",
+    "Description": "To indicate the start of Section 3",
+    "section": null
+  },
+  {
+    "Name": "EQ5D-5L admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – EQ5DADSTART",
+    "Example": "EQ5DADSTART",
+    "Description": "To indicate the start of EQ5D-5L admission form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Type of assessment",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Domain\\ADID",
+    "Example": "SHHQ\\tan0110d",
+    "Description": "Name of therapist",
+    "section": null
+  },
+  {
+    "Name": "Mobility",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5,\nNA = 999\n]\n\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Mobility",
+    "section": null
+  },
+  {
+    "Name": "SelfCare",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR  Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5\nNA = 999\n]\n\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Self-Care",
+    "section": null
+  },
+  {
+    "Name": "UsualActivities",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5\nNA = 999\n]\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Usual Activities (e.g. work, study, housework, family, or leisure activities)",
+    "section": null
+  },
+  {
+    "Name": "Pain/Discomfort",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5\nNA = 999\n]\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Pain/ Discomfort",
+    "section": null
+  },
+  {
+    "Name": "AnxietyDepression",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5\nNA = 999\n]\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Anxiety/Depression",
+    "section": null
+  },
+  {
+    "Name": "RateHealth",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 100, 999",
+    "Example": "75",
+    "Description": "On a scale of 0 -100, how would you rate your health TODAY?\n(0=worst health, 100=best health)",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "EQ5D-5L admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – EQ5DADEND",
+    "Example": "EQ5DADEND",
+    "Description": "To indicate the end of EQ5D-5L admission form",
+    "section": null
+  },
+  {
+    "Name": "EQ5D-5L discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the EQ5D-5L discharge form)\nStatic Placeholder – EQ5DDISSTART",
+    "Example": "EQ5DDISSTART",
+    "Description": "To indicate the start of EQ5D-5L discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Type of assessment",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Domain\\ADID",
+    "Example": "SHHQ\\tan0110d",
+    "Description": "Name of therapist",
+    "section": null
+  },
+  {
+    "Name": "Mobility",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5,\nNA = 999\n]\n\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Mobility",
+    "section": null
+  },
+  {
+    "Name": "SelfCare",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR  Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5\nNA = 999\n]\n\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Self-Care",
+    "section": null
+  },
+  {
+    "Name": "UsualActivities",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5\nNA = 999\n]\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Usual Activities (e.g. work, study, housework, family, or leisure activities)",
+    "section": null
+  },
+  {
+    "Name": "Pain/Discomfort",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5\nNA = 999\n]\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Pain/ Discomfort",
+    "section": null
+  },
+  {
+    "Name": "AnxietyDepression",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 5, 999\n\n[NGEMR Mapping:\nNo problems = 1, \nSlight problems = 2,\nModerate problems = 3, \nSevere problems = 4, \nUnable to = 5\nNA = 999\n]\nNGEMR to send 1 to 5, 999",
+    "Example": "3",
+    "Description": "Anxiety/Depression",
+    "section": null
+  },
+  {
+    "Name": "RateHealth",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 100, 999",
+    "Example": "75",
+    "Description": "On a scale of 0 -100, how would you rate your health TODAY?\n(0=worst health, 100=best health)",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "EQ5D-5L discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the EQ5D-5L discharge form)\nStatic Placeholder – EQ5DDISEND",
+    "Example": "EQ5DDISEND",
+    "Description": "To indicate the end of EQ5D-5L discharge form",
+    "section": null
+  },
+  {
+    "Name": "FIM admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – FIMADSTART",
+    "Example": "FIMADSTART",
+    "Description": "To indicate the start of FIM admission form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Assessment type",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Domain\\ADID",
+    "Example": "SHHQ\\physio0111",
+    "Description": "Domain\\ADID",
+    "section": null
+  },
+  {
+    "Name": "Eating",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Eating",
+    "section": null
+  },
+  {
+    "Name": "Grooming",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "3",
+    "Description": "Grooming",
+    "section": null
+  },
+  {
+    "Name": "Bathing",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "6",
+    "Description": "Bathing",
+    "section": null
+  },
+  {
+    "Name": "DressingUpper",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "1",
+    "Description": "Dressing upper body",
+    "section": null
+  },
+  {
+    "Name": "DressingLower",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "2",
+    "Description": "Dressing lower body",
+    "section": null
+  },
+  {
+    "Name": "Toileting",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "3",
+    "Description": "Toileting",
+    "section": null
+  },
+  {
+    "Name": "Bladder",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Bladder management",
+    "section": null
+  },
+  {
+    "Name": "Bowel",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Bowel management",
+    "section": null
+  },
+  {
+    "Name": "Transfer",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "6",
+    "Description": "Transfer bed/chair/wheelchair",
+    "section": null
+  },
+  {
+    "Name": "TransferToilet",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "4",
+    "Description": "Transfer toilet",
+    "section": null
+  },
+  {
+    "Name": "Transferbath",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "1",
+    "Description": "Transfer bath/shower",
+    "section": null
+  },
+  {
+    "Name": "LocomotionType",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nW //Walk\nWH //Wheelchair\nB // Both\nNA// NA",
+    "Example": "B",
+    "Description": "Locomotion Type",
+    "section": null
+  },
+  {
+    "Name": "LocomotionWalk",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is ‘W’\n\nAllowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Locomotion walk",
+    "section": null
+  },
+  {
+    "Name": "LocomotionWheelchair",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is ‘WH’ \nAllowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Locomotion wheelchair",
+    "section": null
+  },
+  {
+    "Name": "LocomotionBoth",
+    "Required": "Yes\n(Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is ‘B’ \nAllowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Locomotion both",
+    "section": null
+  },
+  {
+    "Name": "Stairs",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Stairs",
+    "section": null
+  },
+  {
+    "Name": "Comprehension",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Comprehension",
+    "section": null
+  },
+  {
+    "Name": "ComprehensionCategory",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nV //Verbal\nNV //Non-verbal\nBOTH //Both\nNA//NA\n\n\n[NGEMR Auditory is to be mapped to Verbal,\nVisual is to be mapped to Non-verbal]\n\nNGEMR to send V, NV or Both, NA",
+    "Example": "BOTH",
+    "Description": "Comprehension Category",
+    "section": null
+  },
+  {
+    "Name": "Expression",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Expression",
+    "section": null
+  },
+  {
+    "Name": "ExpressionCategory",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nV //Verbal\nNV //Non-verbal\nBOTH //Both\nNA// NA\n\n[NGEMR Auditory is to be mapped to Verbal,\nVisual is to be mapped to Non-verbal]\n\nNGEMR to send V, NV or BOTH",
+    "Example": "BOTH",
+    "Description": "ExpressionCategory",
+    "section": null
+  },
+  {
+    "Name": "SocialInteraction",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Social interaction",
+    "section": null
+  },
+  {
+    "Name": "ProblemSolving",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Problem solving",
+    "section": null
+  },
+  {
+    "Name": "Memory",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Memory",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "FIM admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – FIMADEND",
+    "Example": "FIMADEND",
+    "Description": "To indicate the end of FIM admission form",
+    "section": null
+  },
+  {
+    "Name": "FIM discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the FIM discharge form)\nStatic Placeholder – FIMDISSTART",
+    "Example": "FIMDISSTART",
+    "Description": "To indicate the start of FIM discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Type of assessment",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Domain\\ADID",
+    "Example": "SHHQ\\tan0110d",
+    "Description": "Name of therapist",
+    "section": null
+  },
+  {
+    "Name": "Eating",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Eating",
+    "section": null
+  },
+  {
+    "Name": "Grooming",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "3",
+    "Description": "Grooming",
+    "section": null
+  },
+  {
+    "Name": "Bathing",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "6",
+    "Description": "Bathing",
+    "section": null
+  },
+  {
+    "Name": "DressingUpper",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "1",
+    "Description": "Dressing upper body",
+    "section": null
+  },
+  {
+    "Name": "DressingLower",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "2",
+    "Description": "Dressing lower body",
+    "section": null
+  },
+  {
+    "Name": "Toileting",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "3",
+    "Description": "Toileting",
+    "section": null
+  },
+  {
+    "Name": "Bladder",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Bladder management",
+    "section": null
+  },
+  {
+    "Name": "Bowel",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Bowel management",
+    "section": null
+  },
+  {
+    "Name": "Transfer",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "6",
+    "Description": "Transfer bed/chair/wheelchair",
+    "section": null
+  },
+  {
+    "Name": "TransferToilet",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "4",
+    "Description": "Transfer toilet",
+    "section": null
+  },
+  {
+    "Name": "Transferbath",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "1",
+    "Description": "Transfer bath/shower",
+    "section": null
+  },
+  {
+    "Name": "LocomotionType",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nW //Walk\nWH //Wheelchair\nB // Both\nNA// NA",
+    "Example": "B",
+    "Description": "Locomotion Type",
+    "section": null
+  },
+  {
+    "Name": "LocomotionWalk",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is ‘W’\n\nAllowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Locomotion walk",
+    "section": null
+  },
+  {
+    "Name": "LocomotionWheelchair",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is ‘WH’ \nAllowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Locomotion wheelchair",
+    "section": null
+  },
+  {
+    "Name": "LocomotionBoth",
+    "Required": "Yes\n(Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is ‘B’ \nAllowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Locomotion both",
+    "section": null
+  },
+  {
+    "Name": "Stairs",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Stairs",
+    "section": null
+  },
+  {
+    "Name": "Comprehension",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Comprehension",
+    "section": null
+  },
+  {
+    "Name": "ComprehensionCategory",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nV //Verbal\nNV //Non-verbal\nBOTH //Both\nNA//NA\n\n\n[NGEMR Auditory is to be mapped to Verbal,\nVisual is to be mapped to Non-verbal]\n\nNGEMR to send V, NV or Both, NA",
+    "Example": "BOTH",
+    "Description": "Comprehension Category",
+    "section": null
+  },
+  {
+    "Name": "Expression",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Expression",
+    "section": null
+  },
+  {
+    "Name": "ExpressionCategory",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nV //Verbal\nNV //Non-verbal\nBOTH //Both\nNA// NA\n\n[NGEMR Auditory is to be mapped to Verbal,\nVisual is to be mapped to Non-verbal]\n\nNGEMR to send V, NV or BOTH",
+    "Example": "BOTH",
+    "Description": "ExpressionCategory",
+    "section": null
+  },
+  {
+    "Name": "SocialInteraction",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Social interaction",
+    "section": null
+  },
+  {
+    "Name": "ProblemSolving",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Problem solving",
+    "section": null
+  },
+  {
+    "Name": "Memory",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Memory",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "FIM discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the FIM discharge form)\nStatic Placeholder – FIMDISEND",
+    "Example": "FIMDISEND",
+    "Description": "To indicate the end of FIM discharge form",
+    "section": null
+  },
+  {
+    "Name": "MBI admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – MBIADSTART",
+    "Example": "MBIADSTART",
+    "Description": "To indicate the start of MBI admission form",
+    "section": null
+  },
+  {
+    "Name": "MBI discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the MBI discharge form)\nStatic Placeholder – MBIDISSTART",
+    "Example": "MBIDISSTART",
+    "Description": "To indicate the start of MBI discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Assessment type",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Assessor actual name  with domain as prefix\n\nSend AD ID also",
+    "Example": "SHHQ\\physio0111",
+    "Description": "OneRehab will retrieve Display Name based on onboarded information",
+    "section": null
+  },
+  {
+    "Name": "ChairBedTransfers",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 3, 8, 12, 15, 999",
+    "Example": "3",
+    "Description": "Chair/Bed Transfers",
+    "section": null
+  },
+  {
+    "Name": "Ambulation",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 3, 8, 12, 15, 999",
+    "Example": "3",
+    "Description": "Ambulation",
+    "section": null
+  },
+  {
+    "Name": "Wheelchair",
+    "Required": "Yes (Refer to rules)",
+    "Type": "Enum",
+    "Rule": "[To be provided only if Ambulation is ‘0’]\n\nAllowed values:\n0, 1, 3, 4, 5, 999",
+    "Example": "5",
+    "Description": "Wheelchair",
+    "section": null
+  },
+  {
+    "Name": "StairClimbing",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 2, 5, 8, 10, 999",
+    "Example": "10",
+    "Description": "Stair Climbing",
+    "section": null
+  },
+  {
+    "Name": "ToiletTransfers",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 2, 5, 8, 10, 999",
+    "Example": "8",
+    "Description": "Toilet Transfers",
+    "section": null
+  },
+  {
+    "Name": "BowelControl",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 2, 5, 8, 10, 999",
+    "Example": "5",
+    "Description": "Bowel Control",
+    "section": null
+  },
+  {
+    "Name": "BladderControl",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 2, 5, 8, 10, 999",
+    "Example": "2",
+    "Description": "Bladder Control",
+    "section": null
+  },
+  {
+    "Name": "Bathing",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 1, 3, 4, 5, 999",
+    "Example": "3",
+    "Description": "Bathing",
+    "section": null
+  },
+  {
+    "Name": "Dressing",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 2, 5, 8, 10, 999",
+    "Example": "5",
+    "Description": "Dressing",
+    "section": null
+  },
+  {
+    "Name": "PersonalHygieneGrooming",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 1, 3, 4, 5, 999",
+    "Example": "0",
+    "Description": "Personal hygiene grooming",
+    "section": null
+  },
+  {
+    "Name": "Feeding",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0, 2, 5, 8, 10, 999",
+    "Example": "10",
+    "Description": "Feeding",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "MBI admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – MBIADEND",
+    "Example": "MBIADEND",
+    "Description": "To indicate the end of MBI admission form",
+    "section": null
+  },
+  {
+    "Name": "MBI discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the MBI discharge form)\nStatic Placeholder – MBIDISEND",
+    "Example": "MBIDISEND",
+    "Description": "To indicate the end of MBI discharge form",
+    "section": null
+  },
+  {
+    "Name": "Stroke admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – STROKEADSTART",
+    "Example": "STROKEADSTART",
+    "Description": "To indicate the start of Stroke admission form",
+    "section": null
+  },
+  {
+    "Name": "Stroke discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Stroke discharge form)\nStatic Placeholder – STROKEDISSTART",
+    "Example": "STROKEDISSTART",
+    "Description": "To indicate the start of Stroke discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA, //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Assessment type",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Assessor actual name with domain as prefix\n\nSend AD ID also",
+    "Example": "SHHQ\\physio0111",
+    "Description": "OneRehab will retrieve Display Name based on onboarded information",
+    "section": null
+  },
+  {
+    "Name": "PrepMeals",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3, 999",
+    "Example": "2",
+    "Description": "Prepare main meals",
+    "section": null
+  },
+  {
+    "Name": "WashMeals",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3, 999",
+    "Example": "1",
+    "Description": "Wash up after meals",
+    "section": null
+  },
+  {
+    "Name": "WashClothes",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "1",
+    "Description": "Wash clothes",
+    "section": null
+  },
+  {
+    "Name": "LHseWork",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "3",
+    "Description": "Light housework",
+    "section": null
+  },
+  {
+    "Name": "HHseWork",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "1",
+    "Description": "Heavy housework",
+    "section": null
+  },
+  {
+    "Name": "LocalShop",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "1",
+    "Description": "Local shopping",
+    "section": null
+  },
+  {
+    "Name": "SocialOcc",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allow values:\n0 to 3,999",
+    "Example": "0",
+    "Description": "Social occasions",
+    "section": null
+  },
+  {
+    "Name": "Walk15min",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "0",
+    "Description": "Walking outside for >15 minutes",
+    "section": null
+  },
+  {
+    "Name": "Hobby",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "0",
+    "Description": "Actively pursuing hobby",
+    "section": null
+  },
+  {
+    "Name": "CarBus",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "3",
+    "Description": "Driving car / travel by bus",
+    "section": null
+  },
+  {
+    "Name": "OutingCarRide",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "1",
+    "Description": "Travel outing / car ride",
+    "section": null
+  },
+  {
+    "Name": "Gardening",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "0",
+    "Description": "Gardening",
+    "section": null
+  },
+  {
+    "Name": "HseMtce",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "1",
+    "Description": "Household maintenance",
+    "section": null
+  },
+  {
+    "Name": "Read",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "3",
+    "Description": "Reading books",
+    "section": null
+  },
+  {
+    "Name": "GainfulWork",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 3,999",
+    "Example": "2",
+    "Description": "Gainful work",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - (Frenchay index)",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If all fields (Frenchay index) is all 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "FOIS",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n1 to 7,999",
+    "Example": "4",
+    "Description": "Functional Oral Intake Scale (FOIS)",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - (FOIS)",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If field (FOIS) is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Gait Speed",
+    "Required": "Yes",
+    "Type": "Decimal",
+    "Rule": "Allowed values:\n0.01 to 99.98,999\n\nMapped to calculated speed in NGEMR",
+    "Example": "4.53",
+    "Description": "Gait Speed in m/s (enter 999 if not applicable)",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - (Gait speed)",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If field (Gait speed) is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "AusTOMsTypes",
+    "Required": "Yes\nNo",
+    "Type": "Enum",
+    "Rule": "Allowed values (Multiple):\nSpeech, // Speech\nLanguage, //Language\nCognitiveCommunication // Cognitive- Communication",
+    "Example": "Speech, Language",
+    "Description": "Australian Therapy Outcome Measures Core Areas\n\nIf AUSTOMS is not applicable, the value for AusTOMsTypes field should be “Speech, Language, CognitiveCommunication”",
+    "section": null
+  },
+  {
+    "Name": "SpeechImpairment",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘S’\n\nAllowed values:\nZero //0 – Profound \nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No Speech Impairment\nNA",
+    "Example": "ZeroPointFive",
+    "Description": "Speech impairment\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "SpeechActivityLimitation",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘S’\n\nAllowed values:\nZero //0 – Profound \nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No limitation\nNA",
+    "Example": "Five",
+    "Description": "Speech activity limitation\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "SpeechParticipationRestriction",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘S’\n\nAllowed values:\nZero //0 – Unable to fulfil social, work, educational or family roles\nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No Difficulties\nNA",
+    "Example": "ZeroPointFive",
+    "Description": "Speech participation restriction\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "SpeechDistressWellbing",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘S’\n\nAllowed values:\nZero //0 – High and consistent\nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – Able to cope with most situations\nNA",
+    "Example": "FourPointFive",
+    "Description": "Speech distress/wellbeing\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "LanguageImpairment",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘L’ \n\nAllowed values:\nZero //0 – Profound \nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No Language Impairment\nNA",
+    "Example": "Three",
+    "Description": "Language impairment\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "LanguageActivityLimitation",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘L’\n\nAllowed values:\nZero //0 – Profound \nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No limitation\nNA",
+    "Example": "ThreePointFive",
+    "Description": "Language activity limitation\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "LanguageParticipationRestriction",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘L’ \n\nAllowed values:\nZero //0 – Unable to fulfil social, work, educational or family roles\nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No Difficulties\nNA",
+    "Example": "ZeroPointFive",
+    "Description": "Language participation restriction\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "LanguageDistressWellbing",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘L’ \n\nAllowed values:\nZero //0 – High and consistent\nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – Able to cope with most situations\nNA",
+    "Example": "One",
+    "Description": "Language distress/wellbeing\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "CognitiveImpairment",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘C’ \n\nAllowed values:\nZero //0 – Profound \nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No Cognitive Impairment\nNA",
+    "Example": "Two",
+    "Description": "Cognitive-Communication impairment\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "CognitiveActivityLimitation",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘C’ \n\nAllowed values:\nZero //0 – Profound \nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No limitation\nNA",
+    "Example": "OnePointFive",
+    "Description": "Cognitive-Communication activity limitation\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "CognitiveParticipationRestriction",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘C’ \n\nAllowed values:\nZero //0 – Unable to fulfil social, work, educational or family roles\nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – No Difficulties\nNA",
+    "Example": "Zero",
+    "Description": "Cognitive-Communication participation restriction\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "CognitiveDistressWellbing",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains ‘C’ \n\nAllowed values:\nZero //0 – High and consistent\nZeroPointFive //0.5\nOne //1 – Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 – Able to cope with most situations\nNA",
+    "Example": "Three",
+    "Description": "Cognitive-Communication distress/wellbeing\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - (AusTOMs)",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If field (AusTOMs) is not applicable, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Stroke admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – STROKEADEND",
+    "Example": "STROKEADEND",
+    "Description": "To indicate the end of Stroke admission form",
+    "section": null
+  },
+  {
+    "Name": "Stroke discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the FIM discharge form)\nStatic Placeholder – STROKEDISEND",
+    "Example": "STROKEDISEND",
+    "Description": "To indicate the end of Stroke discharge form",
+    "section": null
+  },
+  {
+    "Name": "Spinal Cord Injury admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – SCIADSTART",
+    "Example": "SCIADSTART",
+    "Description": "To indicate the start of Spinal Cord Injury admission form",
+    "section": null
+  },
+  {
+    "Name": "Spinal Cord Injury discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Spinal Cord Injury discharge form)\nStatic Placeholder – SCIDISSTART",
+    "Example": "SCIDISSTART",
+    "Description": "To indicate the start of Spinal Cord Injury discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA, //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Assessment type",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Assessor actual name with domain as prefix\n\nSend AD ID also",
+    "Example": "SHHQ\\physio0111",
+    "Description": "OneRehab will retrieve Display Name based on onboarded information",
+    "section": null
+  },
+  {
+    "Name": "SensoryR",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nC2\nC3 \nC4\nC5\nC6\nC7\nC8\nT1\nT2 \nT3 \nT4\nT5\nT6\nT7\nT8\nT9\nT10\nT11\nT12\nL1\nL2 \nL3 \nL4\nL5\nS1\nS2\nS3\nS4S5 //S4-5\nNA \n\nMap \nNormal in NGEMR to S4-5\nUnknown in NGEMR to Unknown",
+    "Example": "S4S5",
+    "Description": "Sensory (Right)",
+    "section": null
+  },
+  {
+    "Name": "SensoryL",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nC2\nC3\nC4\nC5\nC6\nC7\nC8\nT1,\nT2\nT3\nT4\nT5\nT6\nT7\nT8\nT9\nT10\nT11\nT12\nL1\nL2\nL3\nL4\nL5\nS1\nS2\nS3\nS4S5 //S4-5\nNA\n\nMap \nNormal in NGEMR to S4-5\nUnknown in NGEMR to Unknown",
+    "Example": "T2",
+    "Description": "Sensory (Left)",
+    "section": null
+  },
+  {
+    "Name": "MotorR",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values: \nC2\nC3\nC4\nC5\nC6\nC7\nC8\nT1\nT2\nT3\nT4\nT5\nT6\nT7\nT8\nT9\nT10\nT11\nT12\nL1\nL2\nL3\nL4\nL5\nS1\nS2\nS3\nS4S5 //S4-5\nNA\n\nMap \nNormal in NGEMR to S4-5\nUnknown in NGEMR to Unknown",
+    "Example": "S4S5",
+    "Description": "Motor(Right)",
+    "section": null
+  },
+  {
+    "Name": "MotorL",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values: \nC2\nC3\nC4\nC5\nC6\nC7\nC8\nT1\nT2\nT3\nT4\nT5\nT6\nT7\nT8\nT9\nT10\nT11\nT12\nL1\nL2\nL3\nL4\nL5\nS1\nS2\nS3\nS4S5 //S4-5\nNA\n\nMap \nNormal in NGEMR to S4-5\nUnknown in NGEMR to Unknown",
+    "Example": "C8",
+    "Description": "Motor(Left)",
+    "section": null
+  },
+  {
+    "Name": "NeuroInjury",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values: \nC2\nC3\nC4\nC5\nC6\nC7\nC8\nT1\nT2\nT3\nT4\nT5\nT6\nT7\nT8\nT9\nT10\nT11\nT12\nL1\nL2\nL3\nL4\nL5\nS1\nS2\nS3\nS4S5 //S4-5\nNA\n\nMap \nNormal in NGEMR to S4-5\nUnknown in NGEMR to Unknown",
+    "Example": "C7",
+    "Description": "Neurological level of injury",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - (SensoryR,SensoryL,MotorR,MotorL,NeuroInjury)",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If all fields (SensoryR,SensoryL,MotorR,MotorL,NeuroInjury) is all NA, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "CompleteIncomplete",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed value:\nComplete\nIncomplete\nNA",
+    "Example": "Complete",
+    "Description": "Complete or incomplete?",
+    "section": null
+  },
+  {
+    "Name": "AISGrade",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed value:\nA to E, NA\n\n[NGEMR mapping:\nCustom list:\nA=Complete\nB=Incomplete\nC=Sensory Incomplete\nD=Motor Incomplete\nE=Normal\nNA\n]\n\nEMR to send A to E",
+    "Example": "D",
+    "Description": "AIS grade",
+    "section": null
+  },
+  {
+    "Name": "Spinal Cord Injury admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – SCIADEND",
+    "Example": "SCIADEND",
+    "Description": "To indicate the end of Spinal Cord Injury admission form",
+    "section": null
+  },
+  {
+    "Name": "Spinal Cord Injury discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the FIM discharge form)\nStatic Placeholder – SCIDISEND",
+    "Example": "SCIDISEND",
+    "Description": "To indicate the end of Spinal Cord Injury discharge form",
+    "section": null
+  },
+  {
+    "Name": "Hip Fracture admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – HIPADSTART",
+    "Example": "HIPADSTART",
+    "Description": "To indicate the start of Spinal Cord Injury admission form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA, //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Assessment type",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Assessor actual name  with domain as prefix\n\nSend AD ID also",
+    "Example": "SHHQ\\physio0111",
+    "Description": "OneRehab will retrieve Display Name based on onboarded information",
+    "section": null
+  },
+  {
+    "Name": "Gait Speed",
+    "Required": "Yes",
+    "Type": "Decimal",
+    "Rule": "Allowed values:\n0.01 to 99.98, 999",
+    "Example": "4.50",
+    "Description": "Gait Speed\nMapped to calculated speed in NGEMR\n\nNGEMR mapping: Any value outside range NGEMR will send invalid value to One-Rehab",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Gait Speed",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Gait Speed is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "PainScore",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 10, 999",
+    "Example": "3",
+    "Description": "Pain score",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - PainScore",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If PainScore is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Hip Fracture admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – HIPADEND",
+    "Example": "HIPADEND",
+    "Description": "To indicate the start of Hip Fracture admission form",
+    "section": null
+  },
+  {
+    "Name": "Hip Fracture discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Hip Fracture discharge form)\nStatic Placeholder – HIPDISSTART",
+    "Example": "HIPDISSTART",
+    "Description": "To indicate the start of Spinal Cord Injury discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Type of assessment",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Domain\\ADID",
+    "Example": "SHHQ\\tan0110d",
+    "Description": "Name of therapist",
+    "section": null
+  },
+  {
+    "Name": "Gait Speed",
+    "Required": "Yes",
+    "Type": "Decimal",
+    "Rule": "Allowed values:\n0.01 to 99.98,999\n\nMapped to calculated speed in NGEMR",
+    "Example": "4.53",
+    "Description": "Gait Speed in m/s (enter 999 if not applicable)",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Gait Speed",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Gait Speed is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "PainScore",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 10, 999",
+    "Example": "3",
+    "Description": "Pain score",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - PainScore",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If PainScore is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Hip Fracture discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Hip Fracture discharge form)\nStatic Placeholder –HIPDISEND",
+    "Example": "HIPDISEND",
+    "Description": "To indicate the start of Hip Fracture discharge form",
+    "section": null
+  },
+  {
+    "Name": "Section 3 End",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder - ORS3END",
+    "Example": "ORS3END",
+    "Description": "To indicate the end of Section 3",
+    "section": null
+  },
+  {
+    "Name": "Amputation admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – AMPADSTART",
+    "Example": "AMPADSTART",
+    "Description": "To indicate the start of Amputation admission form",
+    "section": null
+  },
+  {
+    "Name": "Amputation discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Amputation discharge form)\nStatic Placeholder – AMPDISSTART",
+    "Example": "AMPDISSTART",
+    "Description": "To indicate the start of Amputation discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA, //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Assessment type",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Assessor actual name with domain as prefix\n\nSend AD ID also",
+    "Example": "SHHQ\\physio0111",
+    "Description": "OneRehab will retrieve Display Name based on onboarded information",
+    "section": null
+  },
+  {
+    "Name": "KLevelPredicted",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed value:\nPK0, //Predicted K0 \nPK1, // Predicted K1 \nPK2, // Predicted K2 \nPK3, // Predicted K3 \nPK4, // Predicted K4 \nNA",
+    "Example": "PK1",
+    "Description": "K-level Predicted\nPlanned to go live with TTSH NGEMR. For now all Klevel value is mapped to K level current until TTSH ENEMR go live",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - KlevelPredicted",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Klevelpredicted is NA, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "KLevelCurrent",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "CK0, // Current K0 \nCK1, // Current K1 \nCK2, // Current K2 \nCK3, // Current K3 \nCK4, // Current K4\nNA",
+    "Example": "CK1",
+    "Description": "K-level Current\nMapped to NGEMR Klevel value",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Klevelcurrent",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If klevelcurrent is NA, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "GaitSpeed",
+    "Required": "Yes",
+    "Type": "Decimal",
+    "Rule": "Allowed values:\n0.01 to 99.98, 999\n\nMapped to calculated speed in NGEMR\n\nNGEMR mapping: Any value outside range NGEMR will send invalid value to One-Rehab",
+    "Example": "4.40",
+    "Description": "Gait Speed",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Gait Speed",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Gait Speed is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "WithoutProsthesis",
+    "Required": "Yes (for discharge only)",
+    "Type": "Enum",
+    "Rule": "Only Required for Discharge Assessment (ie for assessments fields after AMPDISSTART field)\n\nAllowed values:\n0 to 43\n999\n\nExpected values should fall between 0-43 and 999.\n\nValues out of this range will be rejected from the interface /displayed as invalid on OneRehab portal",
+    "Example": "22",
+    "Description": "Without prosthesis: Amputee Mobility Predictor (AMP) score (enter 999 if not applicable)",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - WithoutProsthesis",
+    "Required": "Yes (refer to rule) (for discharge only)",
+    "Type": "String (Encoded)",
+    "Rule": "Only Required for Discharge Assessment\n\nIf WithoutProsthesis\n is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "WithProsthesis",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 47\n999\n\nExpected values should fall between 0-47 and 999.\n\nValues out of this range will be rejected from the interface /displayed as invalid on OneRehab portal",
+    "Example": "17",
+    "Description": "With prosthesis: Amputee Mobility Predictor (AMP) score (enter 999 if not applicable)",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - WithProsthesis",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If WithProsthesis\n is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "PainScore",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 10,999",
+    "Example": "3",
+    "Description": "Pain Score",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - PainScore",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Painscore\n is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Amputation admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – AMPADEND",
+    "Example": "AMPADEND",
+    "Description": "To indicate the end of Amputation admission form",
+    "section": null
+  },
+  {
+    "Name": "Amputation discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Amputation discharge form)\nStatic Placeholder –AMPDISEND",
+    "Example": "AMPDISEND",
+    "Description": "To indicate the end of Amputation discharge form",
+    "section": null
+  },
+  {
+    "Name": "MSK admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – MSKADSTART",
+    "Example": "MSKADSTART",
+    "Description": "To indicate the start of MSK admission form",
+    "section": null
+  },
+  {
+    "Name": "MSK discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed MSK discharge form)\nStatic Placeholder – MSKDISSTART",
+    "Example": "MSKPDISSTART",
+    "Description": "To indicate the start of MSK discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Assessment type",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Assessor actual name with domain as prefix\n\nSend AD ID also",
+    "Example": "SHHQ\\physio0111",
+    "Description": "OneRehab will retrieve Display Name based on onboarded information",
+    "section": null
+  },
+  {
+    "Name": "PainScore",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 10, 999",
+    "Example": "6",
+    "Description": "Pain Score",
+    "section": null
+  },
+  {
+    "Name": "Please specify: -  PainScore",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Painscore\n is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Activity1Text",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Max characters: 254\nNA is not applicable",
+    "Example": "Squat ability",
+    "Description": "Therapist to specify assessment questionnaire",
+    "section": null
+  },
+  {
+    "Name": "Activity1Score",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allow values:\n0 to 10, 999",
+    "Example": "3",
+    "Description": "Therapist to submit assessment",
+    "section": null
+  },
+  {
+    "Name": "Activity2Text",
+    "Required": "No",
+    "Type": "String - Encoded",
+    "Rule": "Max characters: 254",
+    "Example": "Stretch ability",
+    "Description": "Therapist to specify assessment questionnaire",
+    "section": null
+  },
+  {
+    "Name": "Activity2Score",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if ‘Activity2Text’ is not empty\n\nAllow values:\n0 to 10",
+    "Example": "3",
+    "Description": "Therapist to submit assessment",
+    "section": null
+  },
+  {
+    "Name": "Activity3Text",
+    "Required": "No",
+    "Type": "String - Encoded",
+    "Rule": "Max characters: 254",
+    "Example": "Some ability",
+    "Description": "Therapist to specify assessment questionnaire",
+    "section": null
+  },
+  {
+    "Name": "Activity3Score",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if ‘Activity2Text’ is not empty \n\nAllow values:\n0 to 10",
+    "Example": "2",
+    "Description": "Therapist to submit assessment",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Pain Specific Functional Scale",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Pain Specific Functional Scale is NA for activity, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "MSK admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – MSKADEND",
+    "Example": "MSKADEND",
+    "Description": "To indicate the end of MSK admission form",
+    "section": null
+  },
+  {
+    "Name": "MSK discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the MSK discharge form)\nStatic Placeholder MSKDISEND",
+    "Example": "MSKDISEND",
+    "Description": "To indicate the end of MSK discharge form",
+    "section": null
+  },
+  {
+    "Name": "Deconditioning admission form start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – DECONADSTART",
+    "Example": "DECONADSTART",
+    "Description": "To indicate the start of Deconditioning admission form",
+    "section": null
+  },
+  {
+    "Name": "Deconditioning discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed Deconditioning discharge form)\nStatic Placeholder – DECONDISSTART",
+    "Example": "DECONDISSTART",
+    "Description": "To indicate the start of Deconditioning discharge form",
+    "section": null
+  },
+  {
+    "Name": "DateAssessed",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-11",
+    "Description": "Date of assessment",
+    "section": null
+  },
+  {
+    "Name": "Type",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nA //Admission\nD //Discharge",
+    "Example": "A",
+    "Description": "Assessment type",
+    "section": null
+  },
+  {
+    "Name": "Assessedby",
+    "Required": "Yes",
+    "Type": "String - Encoded",
+    "Rule": "Assessor actual name with domain as prefix\n\nSend AD ID also",
+    "Example": "SHHQ\\physio0111",
+    "Description": "OneRehab will retrieve Display Name based on onboarded information",
+    "section": null
+  },
+  {
+    "Name": "FallHistory",
+    "Required": "Yes (refer to rule)",
+    "Type": "Enum",
+    "Rule": "[Only show for RGD 6.2]\n\nAllowed values:\n0 to 99, 999",
+    "Example": "60",
+    "Description": "Falls history in the previous 6 months",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - FallHistory",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If FallHistory is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "GaitSpeed",
+    "Required": "Yes",
+    "Type": "Decimal",
+    "Rule": "Allowed values:\n0.01 to 99.98, 999",
+    "Example": "4.50",
+    "Description": "Gait Speed in m/s (enter 99.99 if not applicable)\nMapped to calculated speed in NGEMR\n\nNGEMR mapping: Any value outside range NGEMR will send invalid value to One-Rehab",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Gait Speed",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Gait Speed is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "BergBalanceScale",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n0 to 56, 999\n[For numeric values beyond 0-56, OneRehab portal will display value as invalid]",
+    "Example": "30",
+    "Description": "Berg Balance Scale",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - BergBalancescale",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If BergBalanceScale is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "SitToStand",
+    "Required": "Yes",
+    "Type": "Decimal",
+    "Rule": "Allowed values:\n0.0 to 998.9, 999\n\nNGEMR mapping: Any value outside range NGEMR will send invalid value to One-Rehab",
+    "Example": "230",
+    "Description": "Timed 5 Sit-To-Stand in seconds (999 if not applicable)",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - SitToStand",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Sit to stand is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Deconditioning admission form end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – DECONADEND",
+    "Example": "DECONADEND",
+    "Description": "To indicate the end of Deconditioning admission form",
+    "section": null
+  },
+  {
+    "Name": "Deconditioning discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed Deconditioning discharge form)\nStatic Placeholder – DECONDISEND",
+    "Example": "DECONDISEND",
+    "Description": "To indicate the end of Deconditioning discharge form",
+    "section": null
+  },
+  {
+    "Name": "Section 4 start",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – ORS4",
+    "Example": "ORS4",
+    "Description": "To indicate the start of Section 4",
+    "section": null
+  },
+  {
+    "Name": "DateDischarge",
+    "Required": "Yes",
+    "Type": "Date",
+    "Rule": "yyyy-mm-dd",
+    "Example": "2020-09-17",
+    "Description": "Date of discharge",
+    "section": null
+  },
+  {
+    "Name": "RehabSettingReferredTo",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values (Multiple):\n\nAHI //Acute Hospital - AHP Outpatient\nCH //Community Hospital - Inpatient\nCBSDRP //Centre Based Services – Day Rehabilitation \nPC //Polyclinic\nHHSHT //Home Healthcare Services- Home Therapy \nNFRN //No further rehabilitation needed\nOTHERS // Others: Please specify",
+    "Example": "CBSDRP, AHI",
+    "Description": "Rehab settings that the patient is referred to",
+    "section": null
+  },
+  {
+    "Name": "RehabSettingReferredToOthers",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "[To be provided only if RehabSettingReferredTo is “OTHERS”]\n\nMax 254 characters \nNo ‘|’ symbol",
+    "Example": "Sample",
+    "Description": "Rehab settings that the patient is referred to \nothers reason",
+    "section": null
+  },
+  {
+    "Name": "CommServicesReferredTo",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "[To be provided only If RehabSettingReferredTo is ‘NFRN’ \n\nAllowed values (Multiple):\nIf ‘N//None’ is selected then other values will not be allowed.\n\nN //None\nME //Centre Based Services – Maintenance Exercise\nDC //Centre Based Services – Day Care\nAAH //Centre Based Services – Active Aging Hub\nHPB //Community programs run by Health Promotion Board\nAS //Community programs run by ActiveSG\nPA //Community programs run by People’s Association\nHC //Community programs run by Healthcare Clusters\nOTHER //Others: Please specify;",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "CommServicesReferredToOthers",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "If CommServicesReferredTo option is OTHER’\n\nMax 254 characters\nNo ‘|’ symbol",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "FollowRDGPathway",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values:\nY //Yes \nN //No",
+    "Example": "Y",
+    "Description": "Does this follow the RDG dominant pathway?",
+    "section": null
+  },
+  {
+    "Name": "IfNoFollowReason",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "[To be provided if FollowRDGPathway is “N”]\n\nMax 254 characters\nNo ‘|’ symbol",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "DischargeCriteria",
+    "Required": "Yes",
+    "Type": "Enum",
+    "Rule": "Allowed values (Multiple):\n\nIN01 //INPATIENT: Achieved rehab goal, medically fit for discharge and no further transitional care issues that require inpatient care \n\nIN02 // INPATIENT: No further improvement (functional plateau), medically fit for discharge, and no further transitional care issues that require inpatient care \n\nIN03 //INPATIENT: Reached maximum RDG-specific rehab LOS, and medically fit for discharge \n\n[show 4-6 for patients discharged from outpatient setting] \n\nOUT01 //OUTPATIENT: Achieved rehab goal \n\nOUT02 // OUTPATIENT: No further improvement (functional plateau) \n\nOUT03 //OUTPATIENT: Reached RDG-specific maximum sessions or duration \n\nOUT04 //OUTPATIENT: Developed new RDG, to restart care plan \n\nAD01 //Stopped / did not show up for rehab / demise",
+    "Example": "OUT3, IN01",
+    "Description": "Discharge Criteria Met",
+    "section": null
+  },
+  {
+    "Name": "RLOSExceededReasons",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[This is mandatory only if Rehab Length of Stay exceeds recommended RDG-specific RLOS & DischargeCriteria is not OUT04 or AD01]\n\nAllowed values (Multiple):\nPRI //Patient related issues (medical) \nEI //Equipment issues \nSI //Service issues \nSCSI //Social/community support issues \nPB //Patient behavioural/mental health issues \nTI //Transportation issues \nFI //Financial issues \nHI //Housing issues \nO // Other issues. Please specify",
+    "Example": "PRI, FI",
+    "Description": "Indicate reason(s) for delay [select all that apply]",
+    "section": null
+  },
+  {
+    "Name": "RLOSExceedReasonsText",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "[To be provided only if RLOSExceedReasons is ‘O’]\n\nMax characters 254",
+    "Example": "",
+    "Description": "Other reasons for the delay",
+    "section": null
+  },
+  {
+    "Name": "HomeModifications",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Allowed values:\n\nYes //Yes, done\nYP //Yes, pending\nNo //No",
+    "Example": "Y",
+    "Description": "Does the patient require home modifications?",
+    "section": null
+  },
+  {
+    "Name": "HomeModificationsDone",
+    "Required": "No",
+    "Type": "String - Encoded",
+    "Rule": "If HomeModifications option is ‘Yes’ or ‘YP’\n\nMax characters 254",
+    "Example": "Grab bars in all toilets",
+    "Description": "What home modifications were/are being done?",
+    "section": null
+  },
+  {
+    "Name": "CaregiverStatus",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[To be provided only if DischargeCriteria is not OUT04 or AD01]\n\nAllowed Values: \n\nD //Does not need caregiver\nNLC //Needs caregiver, live-in caregiver available \nNAC //Needs caregiver, ad-hoc caregiver available \nNNC //Needs caregiver, no available caregiver \nNPA //Needs caregiver, pending arrangements\nNA //Not applicable",
+    "Example": "NLC",
+    "Description": "Caregiver status",
+    "section": null
+  },
+  {
+    "Name": "CaregiverRelationship",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[To be provided only if CaregiverStatus is either ‘NLC’ or ‘NAC’]\n\nAllowed values:\n\nSP //Spouse/Partner \nPG //Parent/Guardian \nC //Child \nS //Sibling \nF //Foreign domestic worker \nO //Others. Please specify\n\n[\nSpouse/Partner (Spouse),\nParent/Guardian (Parent),\nChild (Children),\nSibling (Siblings),\nForeign domestic worker (Domestic Helper),\nOthers (No caregiver/\n Grandchildren, Children in law, Others (comments))\n]\nValues in bracket are from NGEMR",
+    "Example": "O",
+    "Description": "Relationship of primary caregiver",
+    "section": null
+  },
+  {
+    "Name": "CaregiverRelationshipOthers",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "[To be provided if CaregiverRelationship is ‘O’]\n\nMax characters 254\n\n[NGEMR to provide ‘No caregiver’ or ‘Grandchildren’ where applicable]",
+    "Example": "Significant Other",
+    "Description": "Primary caregiver other relationship",
+    "section": null
+  },
+  {
+    "Name": "DischargeEmployStatus",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[For all discharge employment status that does not fall within the allowed values, please specify as ‘O’] \n\n[To be provided if  is ‘E’& only if DischargeCriteria is not OUT04 or AD01]\n\n\nAllowed values:\n\nE //Employed\nU //Unemployed\nSE //Self-employed\nH //Homemaker\nR //Retiree\nO //Others",
+    "Example": "E",
+    "Description": "Discharge employment status or anticipated employment status after discharge",
+    "section": null
+  },
+  {
+    "Name": "DischargeMobilityComm",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[This is mandatory only if DischargeCriteria is not OUT04 or AD01]\n\nAllowed values:\nWI //Walk independently \nWA //Walk assisted\nWID //Walk independently; does not use PMA \nWIIM //Walk independently; independent with PMA\nWAD //Walk assisted; does not use PMA \nWAI //Walk assisted; independent with PMA \nWANA //Walk assisted; needs assistance with PMA \nNIP //Not able to walk; independent with PMA \nNAP // Not able to walk; assisted with PMA \nH //Homebound\nB //Bedbound\nO //Others",
+    "Example": "WID",
+    "Description": "Mobility status in community at Discharge",
+    "section": null
+  },
+  {
+    "Name": "DischargeSocialServices",
+    "Required": "No",
+    "Type": "Enum",
+    "Rule": "Allowed Values (Multiple):\nDC //Day Care \nDDC //Dementia Day Care \nHMS //Home Medical Service \nHNS //Home Nursing Service \nMOW //Meal-on-Wheels \nMET //Medical Escort & Transport \nHPC //Home Personal Care",
+    "Example": "DC,  DDC",
+    "Description": "What social service(s) is/are the patient referred to? [select all that apply]",
+    "section": null
+  },
+  {
+    "Name": "Section 4 end",
+    "Required": "Yes",
+    "Type": "String",
+    "Rule": "Static Placeholder – ORS4END",
+    "Example": "ORS4END",
+    "Description": "To indicate the end of Section 4",
+    "section": null
+  }
+]
