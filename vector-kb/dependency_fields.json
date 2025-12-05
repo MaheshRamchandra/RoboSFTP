@@ -1,0 +1,641 @@
+[
+  {
+    "Name": "ReferralSourceSettingOther",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "If ReferralSourceSetting option is OTHER\u2019\n\nMax 254 characters",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "RDGPrimaryOther",
+    "Required": "No (Refer to rule)",
+    "Type": "String",
+    "Rule": "To be provided if RDG code is \u201c17\u201d\n\nMax 500 characters",
+    "Example": "",
+    "Description": "Patient primary RDG Other Rehabilitation Diagnosis",
+    "section": null
+  },
+  {
+    "Name": "RDGPrimaryFrailty",
+    "Required": "No (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if RDGSecondary1 is \"DECON63\"\n\nAllowed Values:\nCFS //Clinical Frailty Scale, \nFI //Frailty Index, \nFFC //Fried Frailty Criteria, \nO //Other",
+    "Example": "FI",
+    "Description": "Patient primary RDG What method was used to diagnose frailty?",
+    "section": null
+  },
+  {
+    "Name": "RDGSecondaryFrailty1",
+    "Required": "No (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if RDGSecondary1 is \"DECON63\"\n\nAllowed Values:\nCFS //Clinical Frailty Scale, \nFI //Frailty Index, \nFFC //Fried Frailty Criteria, \nO //Other",
+    "Example": "",
+    "Description": "Patient secondary RDG",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "EQ5D-5L discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the EQ5D-5L discharge form)\nStatic Placeholder \u2013 EQ5DDISSTART",
+    "Example": "EQ5DDISSTART",
+    "Description": "To indicate the start of EQ5D-5L discharge form",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "EQ5D-5L discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the EQ5D-5L discharge form)\nStatic Placeholder \u2013 EQ5DDISEND",
+    "Example": "EQ5DDISEND",
+    "Description": "To indicate the end of EQ5D-5L discharge form",
+    "section": null
+  },
+  {
+    "Name": "LocomotionWalk",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is \u2018W\u2019\n\nAllowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Locomotion walk",
+    "section": null
+  },
+  {
+    "Name": "LocomotionWheelchair",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is \u2018WH\u2019 \nAllowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Locomotion wheelchair",
+    "section": null
+  },
+  {
+    "Name": "LocomotionBoth",
+    "Required": "Yes\n(Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is \u2018B\u2019 \nAllowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Locomotion both",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "FIM discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the FIM discharge form)\nStatic Placeholder \u2013 FIMDISSTART",
+    "Example": "FIMDISSTART",
+    "Description": "To indicate the start of FIM discharge form",
+    "section": null
+  },
+  {
+    "Name": "LocomotionWalk",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is \u2018W\u2019\n\nAllowed values:\n1 to 7, 999",
+    "Example": "5",
+    "Description": "Locomotion walk",
+    "section": null
+  },
+  {
+    "Name": "LocomotionWheelchair",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is \u2018WH\u2019 \nAllowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Locomotion wheelchair",
+    "section": null
+  },
+  {
+    "Name": "LocomotionBoth",
+    "Required": "Yes\n(Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if LocomotionType is \u2018B\u2019 \nAllowed values:\n1 to 7, 999",
+    "Example": "7",
+    "Description": "Locomotion both",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "FIM discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the FIM discharge form)\nStatic Placeholder \u2013 FIMDISEND",
+    "Example": "FIMDISEND",
+    "Description": "To indicate the end of FIM discharge form",
+    "section": null
+  },
+  {
+    "Name": "MBI discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the MBI discharge form)\nStatic Placeholder \u2013 MBIDISSTART",
+    "Example": "MBIDISSTART",
+    "Description": "To indicate the start of MBI discharge form",
+    "section": null
+  },
+  {
+    "Name": "Wheelchair",
+    "Required": "Yes (Refer to rules)",
+    "Type": "Enum",
+    "Rule": "[To be provided only if Ambulation is \u20180\u2019]\n\nAllowed values:\n0, 1, 3, 4, 5, 999",
+    "Example": "5",
+    "Description": "Wheelchair",
+    "section": null
+  },
+  {
+    "Name": "Please Specify",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If any field is NA/999, this field is mandatory",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "MBI discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the MBI discharge form)\nStatic Placeholder \u2013 MBIDISEND",
+    "Example": "MBIDISEND",
+    "Description": "To indicate the end of MBI discharge form",
+    "section": null
+  },
+  {
+    "Name": "Stroke discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Stroke discharge form)\nStatic Placeholder \u2013 STROKEDISSTART",
+    "Example": "STROKEDISSTART",
+    "Description": "To indicate the start of Stroke discharge form",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - (Gait speed)",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If field (Gait speed) is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "SpeechImpairment",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018S\u2019\n\nAllowed values:\nZero //0 \u2013 Profound \nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No Speech Impairment\nNA",
+    "Example": "ZeroPointFive",
+    "Description": "Speech impairment\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "SpeechActivityLimitation",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018S\u2019\n\nAllowed values:\nZero //0 \u2013 Profound \nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No limitation\nNA",
+    "Example": "Five",
+    "Description": "Speech activity limitation\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "SpeechParticipationRestriction",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018S\u2019\n\nAllowed values:\nZero //0 \u2013 Unable to fulfil social, work, educational or family roles\nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No Difficulties\nNA",
+    "Example": "ZeroPointFive",
+    "Description": "Speech participation restriction\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "SpeechDistressWellbing",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018S\u2019\n\nAllowed values:\nZero //0 \u2013 High and consistent\nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 Able to cope with most situations\nNA",
+    "Example": "FourPointFive",
+    "Description": "Speech distress/wellbeing\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "LanguageImpairment",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018L\u2019 \n\nAllowed values:\nZero //0 \u2013 Profound \nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No Language Impairment\nNA",
+    "Example": "Three",
+    "Description": "Language impairment\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "LanguageActivityLimitation",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018L\u2019\n\nAllowed values:\nZero //0 \u2013 Profound \nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No limitation\nNA",
+    "Example": "ThreePointFive",
+    "Description": "Language activity limitation\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "LanguageParticipationRestriction",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018L\u2019 \n\nAllowed values:\nZero //0 \u2013 Unable to fulfil social, work, educational or family roles\nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No Difficulties\nNA",
+    "Example": "ZeroPointFive",
+    "Description": "Language participation restriction\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "LanguageDistressWellbing",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018L\u2019 \n\nAllowed values:\nZero //0 \u2013 High and consistent\nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 Able to cope with most situations\nNA",
+    "Example": "One",
+    "Description": "Language distress/wellbeing\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "CognitiveImpairment",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018C\u2019 \n\nAllowed values:\nZero //0 \u2013 Profound \nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No Cognitive Impairment\nNA",
+    "Example": "Two",
+    "Description": "Cognitive-Communication impairment\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "CognitiveActivityLimitation",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018C\u2019 \n\nAllowed values:\nZero //0 \u2013 Profound \nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No limitation\nNA",
+    "Example": "OnePointFive",
+    "Description": "Cognitive-Communication activity limitation\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "CognitiveParticipationRestriction",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018C\u2019 \n\nAllowed values:\nZero //0 \u2013 Unable to fulfil social, work, educational or family roles\nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 No Difficulties\nNA",
+    "Example": "Zero",
+    "Description": "Cognitive-Communication participation restriction\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "CognitiveDistressWellbing",
+    "Required": "Yes (refer to rule)\nNo",
+    "Type": "Enum",
+    "Rule": "To be provided only if AusTOMsType contains \u2018C\u2019 \n\nAllowed values:\nZero //0 \u2013 High and consistent\nZeroPointFive //0.5\nOne //1 \u2013 Severe \nOnePointFive //1.5\nTwo //2 - Moderate/severe\nTwoPointFive //2.5\nThree //3 - Moderate\nThreePointFive //3.5\nFour //4 - Mild\nFourPointFive // 4.5\nFive //5 \u2013 Able to cope with most situations\nNA",
+    "Example": "Three",
+    "Description": "Cognitive-Communication distress/wellbeing\n\nIf AUSTOMS is not applicable to the patient, this value must be sent as NA",
+    "section": null
+  },
+  {
+    "Name": "Stroke discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the FIM discharge form)\nStatic Placeholder \u2013 STROKEDISEND",
+    "Example": "STROKEDISEND",
+    "Description": "To indicate the end of Stroke discharge form",
+    "section": null
+  },
+  {
+    "Name": "Spinal Cord Injury discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Spinal Cord Injury discharge form)\nStatic Placeholder \u2013 SCIDISSTART",
+    "Example": "SCIDISSTART",
+    "Description": "To indicate the start of Spinal Cord Injury discharge form",
+    "section": null
+  },
+  {
+    "Name": "Spinal Cord Injury discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the FIM discharge form)\nStatic Placeholder \u2013 SCIDISEND",
+    "Example": "SCIDISEND",
+    "Description": "To indicate the end of Spinal Cord Injury discharge form",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Gait Speed",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Gait Speed is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Hip Fracture discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Hip Fracture discharge form)\nStatic Placeholder \u2013 HIPDISSTART",
+    "Example": "HIPDISSTART",
+    "Description": "To indicate the start of Spinal Cord Injury discharge form",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Gait Speed",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Gait Speed is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - PainScore",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If PainScore is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Hip Fracture discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Hip Fracture discharge form)\nStatic Placeholder \u2013HIPDISEND",
+    "Example": "HIPDISEND",
+    "Description": "To indicate the start of Hip Fracture discharge form",
+    "section": null
+  },
+  {
+    "Name": "Amputation discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Amputation discharge form)\nStatic Placeholder \u2013 AMPDISSTART",
+    "Example": "AMPDISSTART",
+    "Description": "To indicate the start of Amputation discharge form",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - KlevelPredicted",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Klevelpredicted is NA, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Gait Speed",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Gait Speed is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - WithoutProsthesis",
+    "Required": "Yes (refer to rule) (for discharge only)",
+    "Type": "String (Encoded)",
+    "Rule": "Only Required for Discharge Assessment\n\nIf WithoutProsthesis\n is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - WithProsthesis",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If WithProsthesis\n is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - PainScore",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Painscore\n is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Amputation discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the Amputation discharge form)\nStatic Placeholder \u2013AMPDISEND",
+    "Example": "AMPDISEND",
+    "Description": "To indicate the end of Amputation discharge form",
+    "section": null
+  },
+  {
+    "Name": "MSK discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed MSK discharge form)\nStatic Placeholder \u2013 MSKDISSTART",
+    "Example": "MSKPDISSTART",
+    "Description": "To indicate the start of MSK discharge form",
+    "section": null
+  },
+  {
+    "Name": "Please specify: -  PainScore",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Painscore\n is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Activity2Score",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if \u2018Activity2Text\u2019 is not empty\n\nAllow values:\n0 to 10",
+    "Example": "3",
+    "Description": "Therapist to submit assessment",
+    "section": null
+  },
+  {
+    "Name": "Activity3Score",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "To be provided only if \u2018Activity2Text\u2019 is not empty \n\nAllow values:\n0 to 10",
+    "Example": "2",
+    "Description": "Therapist to submit assessment",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Pain Specific Functional Scale",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Pain Specific Functional Scale is NA for activity, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "MSK discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed the MSK discharge form)\nStatic Placeholder MSKDISEND",
+    "Example": "MSKDISEND",
+    "Description": "To indicate the end of MSK discharge form",
+    "section": null
+  },
+  {
+    "Name": "Deconditioning discharge form start",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed Deconditioning discharge form)\nStatic Placeholder \u2013 DECONDISSTART",
+    "Example": "DECONDISSTART",
+    "Description": "To indicate the start of Deconditioning discharge form",
+    "section": null
+  },
+  {
+    "Name": "FallHistory",
+    "Required": "Yes (refer to rule)",
+    "Type": "Enum",
+    "Rule": "[Only show for RGD 6.2]\n\nAllowed values:\n0 to 99, 999",
+    "Example": "60",
+    "Description": "Falls history in the previous 6 months",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - FallHistory",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If FallHistory is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - Gait Speed",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If Gait Speed is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Please specify: - BergBalancescale",
+    "Required": "Yes (refer to rule)",
+    "Type": "String (Encoded)",
+    "Rule": "If BergBalanceScale is 999, this field is mandatory",
+    "Example": "",
+    "Description": "Max chars: 2000",
+    "section": null
+  },
+  {
+    "Name": "Deconditioning discharge form end",
+    "Required": "Yes (refer to rule)",
+    "Type": "String",
+    "Rule": "(To only include if the clinician has completed Deconditioning discharge form)\nStatic Placeholder \u2013 DECONDISEND",
+    "Example": "DECONDISEND",
+    "Description": "To indicate the end of Deconditioning discharge form",
+    "section": null
+  },
+  {
+    "Name": "RehabSettingReferredToOthers",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "[To be provided only if RehabSettingReferredTo is \u201cOTHERS\u201d]\n\nMax 254 characters \nNo \u2018|\u2019 symbol",
+    "Example": "Sample",
+    "Description": "Rehab settings that the patient is referred to \nothers reason",
+    "section": null
+  },
+  {
+    "Name": "CommServicesReferredTo",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "[To be provided only If RehabSettingReferredTo is \u2018NFRN\u2019 \n\nAllowed values (Multiple):\nIf \u2018N//None\u2019 is selected then other values will not be allowed.\n\nN //None\nME //Centre Based Services \u2013 Maintenance Exercise\nDC //Centre Based Services \u2013 Day Care\nAAH //Centre Based Services \u2013 Active Aging Hub\nHPB //Community programs run by Health Promotion Board\nAS //Community programs run by ActiveSG\nPA //Community programs run by People\u2019s Association\nHC //Community programs run by Healthcare Clusters\nOTHER //Others: Please specify;",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "CommServicesReferredToOthers",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "If CommServicesReferredTo option is OTHER\u2019\n\nMax 254 characters\nNo \u2018|\u2019 symbol",
+    "Example": "",
+    "Description": "",
+    "section": null
+  },
+  {
+    "Name": "RLOSExceededReasons",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[This is mandatory only if Rehab Length of Stay exceeds recommended RDG-specific RLOS & DischargeCriteria is not OUT04 or AD01]\n\nAllowed values (Multiple):\nPRI //Patient related issues (medical) \nEI //Equipment issues \nSI //Service issues \nSCSI //Social/community support issues \nPB //Patient behavioural/mental health issues \nTI //Transportation issues \nFI //Financial issues \nHI //Housing issues \nO // Other issues. Please specify",
+    "Example": "PRI, FI",
+    "Description": "Indicate reason(s) for delay [select all that apply]",
+    "section": null
+  },
+  {
+    "Name": "RLOSExceedReasonsText",
+    "Required": "Yes (Refer to rule)",
+    "Type": "String - Encoded",
+    "Rule": "[To be provided only if RLOSExceedReasons is \u2018O\u2019]\n\nMax characters 254",
+    "Example": "",
+    "Description": "Other reasons for the delay",
+    "section": null
+  },
+  {
+    "Name": "CaregiverStatus",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[To be provided only if DischargeCriteria is not OUT04 or AD01]\n\nAllowed Values: \n\nD //Does not need caregiver\nNLC //Needs caregiver, live-in caregiver available \nNAC //Needs caregiver, ad-hoc caregiver available \nNNC //Needs caregiver, no available caregiver \nNPA //Needs caregiver, pending arrangements\nNA //Not applicable",
+    "Example": "NLC",
+    "Description": "Caregiver status",
+    "section": null
+  },
+  {
+    "Name": "DischargeEmployStatus",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[For all discharge employment status that does not fall within the allowed values, please specify as \u2018O\u2019] \n\n[To be provided if  is \u2018E\u2019& only if DischargeCriteria is not OUT04 or AD01]\n\n\nAllowed values:\n\nE //Employed\nU //Unemployed\nSE //Self-employed\nH //Homemaker\nR //Retiree\nO //Others",
+    "Example": "E",
+    "Description": "Discharge employment status or anticipated employment status after discharge",
+    "section": null
+  },
+  {
+    "Name": "DischargeMobilityComm",
+    "Required": "Yes (Refer to rule)",
+    "Type": "Enum",
+    "Rule": "[This is mandatory only if DischargeCriteria is not OUT04 or AD01]\n\nAllowed values:\nWI //Walk independently \nWA //Walk assisted\nWID //Walk independently; does not use PMA \nWIIM //Walk independently; independent with PMA\nWAD //Walk assisted; does not use PMA \nWAI //Walk assisted; independent with PMA \nWANA //Walk assisted; needs assistance with PMA \nNIP //Not able to walk; independent with PMA \nNAP // Not able to walk; assisted with PMA \nH //Homebound\nB //Bedbound\nO //Others",
+    "Example": "WID",
+    "Description": "Mobility status in community at Discharge",
+    "section": null
+  }
+]
