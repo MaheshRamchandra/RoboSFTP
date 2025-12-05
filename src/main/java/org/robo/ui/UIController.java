@@ -18,6 +18,7 @@ import org.robo.rag.RagScenarioExcelWriter;
 import org.robo.rag.RagScenarioGenerator;
 import org.robo.rag.RagService;
 import org.robo.rag.RagSpecBuilder;
+import org.robo.rag.DependencyRuleService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -35,7 +36,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -103,6 +103,7 @@ public class UIController {
     @FXML public Button btnRagPreviewScenarios;
     @FXML public Button btnRagSavePreview;
     @FXML public Button btnRagOpenPreviewWindow;
+    @FXML public Button btnRagResetPreview;
     @FXML public VBox vbRagScenarioPreviews;
     // Dependency tab
     @FXML public TextField tfDepRules;
@@ -335,6 +336,7 @@ public class UIController {
         if (btnRagPreviewScenarios != null) btnRagPreviewScenarios.setOnAction(e -> previewRagScenarios());
         if (btnRagSavePreview != null) btnRagSavePreview.setOnAction(e -> saveCurrentPreview());
         if (btnRagOpenPreviewWindow != null) btnRagOpenPreviewWindow.setOnAction(e -> openPreviewWindow());
+        if (btnRagResetPreview != null) btnRagResetPreview.setOnAction(e -> resetScenarioPreview());
         if (btnRagOpenSpecPreview != null) btnRagOpenSpecPreview.setOnAction(e -> openRagSpecPreview());
         if (cbRagAssessmentTool != null) {
             cbRagAssessmentTool.getItems().setAll("FIM", "MBI");
@@ -465,6 +467,23 @@ public class UIController {
         updateButtonStates();
     }
 
+    private void resetScenarioPreview() {
+        String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
+        if (rdg == null || rdg.isBlank()) {
+            ragLog("Select an RDG first.");
+            return;
+        }
+        if (lastRagRecords == null || lastRagRecords.isEmpty()) {
+            ragLog("Retrieve field records before resetting preview.");
+            return;
+        }
+        ScenarioData data = computeScenarioData();
+        if (data == null) return;
+        renderScenarioPreview(rdg, data);
+        ragLog("Preview reset for " + rdg + " (" + data.summary() + ").");
+        updateButtonStates();
+    }
+
     private ScenarioData computeScenarioData() {
         String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
         if (rdg == null || rdg.isBlank()) {
@@ -489,6 +508,10 @@ public class UIController {
         String mixText = tfRagScenarioMix != null ? tfRagScenarioMix.getText() : "";
         try {
             List<RagFieldRecord> rdgFiltered = RagScenarioGenerator.filterByRdgBlocks(lastRagRecords, rdg);
+            if (rdgFiltered.isEmpty()) {
+                ragLog("No fields available for RDG " + rdg + " after block filtering.");
+                return null;
+            }
 
             Map<String, Integer> mixCounts = parseMixCounts(mixText);
             if (!mixCounts.isEmpty()) {
@@ -502,6 +525,7 @@ public class UIController {
                 tool = normalizeTool(tool);
 
                 List<RagFieldRecord> filtered = RagScenarioGenerator.filterByAssessmentTool(rdgFiltered, tool);
+                logMarkerWarnings(rdg, tool, filtered);
                 List<RagFieldRecord> ordered = RagScenarioGenerator.ordered(filtered);
                 List<String> headers = RagScenarioGenerator.buildHeaders(ordered);
                 List<List<String>> scenarios = RagScenarioGenerator.generateScenarios(ordered, cnt);
@@ -514,6 +538,7 @@ public class UIController {
                 String tool = cbRagAssessmentTool != null ? cbRagAssessmentTool.getValue() : "FIM";
                 tool = normalizeTool(tool);
                 List<RagFieldRecord> filtered = RagScenarioGenerator.filterByAssessmentTool(rdgFiltered, tool);
+                logMarkerWarnings(rdg, tool, filtered);
                 List<RagFieldRecord> ordered = RagScenarioGenerator.ordered(filtered);
                 List<String> headers = RagScenarioGenerator.buildHeaders(ordered);
                 List<List<String>> scenarios = RagScenarioGenerator.generateScenarios(ordered, scenarioCount);
@@ -798,18 +823,18 @@ public class UIController {
             return;
         }
         try {
-            List<Map<String, Object>> list = ragMapper.readValue(depRulesFile, new TypeReference<>() {});
+            List<String> warnings = new ArrayList<>();
+            List<DependencyRuleService.RuleEntry> rules = DependencyRuleService.load(depRulesFile, warnings);
             depRuleRows.clear();
-            for (Map<String, Object> m : list) {
-                String required = getString(m.get("Required"));
-                if (required == null || !required.toLowerCase(Locale.ROOT).contains("refer to rule")) continue;
-                String name = getString(m.get("Name"));
-                String rule = getString(m.get("Rule"));
-                String mandatoryWhen = summarizeMandatory(rule);
-                String optionalWhen = summarizeOptional(rule);
-                depRuleRows.add(new DependencyRuleRow(name, required, mandatoryWhen, optionalWhen, rule));
+            for (DependencyRuleService.RuleEntry ruleEntry : rules) {
+                String mandatoryWhen = summarizeMandatory(ruleEntry.rule());
+                String optionalWhen = summarizeOptional(ruleEntry.rule());
+                depRuleRows.add(new DependencyRuleRow(ruleEntry.name(), ruleEntry.required(), mandatoryWhen, optionalWhen, ruleEntry.rule()));
             }
             ragLog("Loaded " + depRuleRows.size() + " dependency rules from " + depRulesFile.getAbsolutePath());
+            for (String w : warnings) {
+                ragLog("[Dependency] " + w);
+            }
             if (depRuleRows.isEmpty()) {
                 ragLog("No 'refer to rule' entries found in file.");
             }
@@ -977,6 +1002,13 @@ public class UIController {
     private String normalizeTool(String tool) {
         if (tool == null) return "";
         return tool.trim().toUpperCase(Locale.ROOT);
+    }
+
+    private void logMarkerWarnings(String rdg, String tool, List<RagFieldRecord> filtered) {
+        List<String> warnings = RagScenarioGenerator.validateAssessmentMarkers(filtered, tool);
+        for (String w : warnings) {
+            ragLog("[Marker] " + w + (rdg != null && !rdg.isBlank() ? " for " + rdg : ""));
+        }
     }
 
     private String detectExistingScenarioTool(File workbookFile, String sheetName) {
@@ -1270,6 +1302,11 @@ public class UIController {
             boolean hasRecords = lastRagRecords != null && !lastRagRecords.isEmpty();
             boolean hasRdg = cbRagRdg != null && cbRagRdg.getValue() != null && !cbRagRdg.getValue().isBlank();
             btnRagPreviewScenarios.setDisable(!(hasRecords && hasRdg));
+        }
+        if (btnRagResetPreview != null) {
+            boolean hasRecords = lastRagRecords != null && !lastRagRecords.isEmpty();
+            boolean hasRdg = cbRagRdg != null && cbRagRdg.getValue() != null && !cbRagRdg.getValue().isBlank();
+            btnRagResetPreview.setDisable(!(hasRecords && hasRdg));
         }
         if (btnRagSavePreview != null) {
             btnRagSavePreview.setDisable(!hasScenarioPreview());

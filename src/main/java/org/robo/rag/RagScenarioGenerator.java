@@ -116,6 +116,41 @@ public final class RagScenarioGenerator {
         return false;
     }
 
+    public static List<String> validateAssessmentMarkers(List<RagFieldRecord> records, String tool) {
+        if (records == null || records.isEmpty()) return List.of();
+        String selected = tool == null ? "FIM" : tool.trim().toUpperCase(Locale.ROOT);
+        List<String> markers = "MBI".equals(selected) ? MBI_MARKERS : FIM_MARKERS;
+
+        Map<String, Integer> indexMap = new HashMap<>();
+        for (int i = 0; i < records.size(); i++) {
+            String h = safe(records.get(i).getExcelHeader());
+            indexMap.putIfAbsent(h, i);
+        }
+
+        List<String[]> pairs = List.of(
+                new String[]{markers.get(0), markers.get(1)},
+                new String[]{markers.get(2), markers.get(3)}
+        );
+
+        List<String> warnings = new ArrayList<>();
+        for (String[] pair : pairs) {
+            String start = pair[0];
+            String end = pair[1];
+            boolean hasStart = indexMap.containsKey(start);
+            boolean hasEnd = indexMap.containsKey(end);
+            if (hasStart ^ hasEnd) {
+                warnings.add("Marker mismatch for " + selected + ": found '" + (hasStart ? start : end) + "' without its pair.");
+            } else if (hasStart && hasEnd) {
+                int startIdx = indexMap.get(start);
+                int endIdx = indexMap.get(end);
+                if (startIdx > endIdx) {
+                    warnings.add("Marker order issue for " + selected + ": '" + start + "' appears after '" + end + "'.");
+                }
+            }
+        }
+        return warnings;
+    }
+
     public static List<RagFieldRecord> filterByRdgBlocks(List<RagFieldRecord> records, String rdg) {
         if (records == null) return List.of();
         String selected = rdg == null ? "" : rdg.trim().toLowerCase(Locale.ROOT);

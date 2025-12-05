@@ -201,6 +201,7 @@
                                                 <Label text="Edit cells in the table below before saving."/>
                                                 <Button fx:id="btnRagSavePreview" text="Save Preview"/>
                                                 <Button fx:id="btnRagOpenPreviewWindow" text="Open Preview Window"/>
+                                                <Button fx:id="btnRagResetPreview" text="Reset Preview"/>
                                             </HBox>
                                             <ScrollPane fitToWidth="true" prefHeight="320" VBox.vgrow="ALWAYS">
                                                 <content>
