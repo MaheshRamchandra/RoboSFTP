@@ -24,6 +24,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
@@ -90,6 +91,7 @@ public class UIController {
     @FXML public Button btnRagRetrieve;
     @FXML public Button btnRagGenerateSpec;
     @FXML public TextArea taRagOutput;
+    @FXML public Button btnRagOpenSpecPreview;
     @FXML public TextArea taRagLog;
     @FXML public TextField tfRagWorkbook;
     @FXML public Button btnRagChooseWorkbook;
@@ -333,6 +335,7 @@ public class UIController {
         if (btnRagPreviewScenarios != null) btnRagPreviewScenarios.setOnAction(e -> previewRagScenarios());
         if (btnRagSavePreview != null) btnRagSavePreview.setOnAction(e -> saveCurrentPreview());
         if (btnRagOpenPreviewWindow != null) btnRagOpenPreviewWindow.setOnAction(e -> openPreviewWindow());
+        if (btnRagOpenSpecPreview != null) btnRagOpenSpecPreview.setOnAction(e -> openRagSpecPreview());
         if (cbRagAssessmentTool != null) {
             cbRagAssessmentTool.getItems().setAll("FIM", "MBI");
             cbRagAssessmentTool.getSelectionModel().select("FIM");
@@ -864,6 +867,34 @@ public class UIController {
         updateButtonStates();
     }
 
+    private void openRagSpecPreview() {
+        String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
+        String payload = taRagOutput != null ? taRagOutput.getText() : "";
+        if (payload == null || payload.isBlank()) {
+            ragLog("Generate or paste a JSON spec before previewing.");
+            return;
+        }
+
+        TextArea ta = new TextArea(payload);
+        ta.setEditable(false);
+        ta.setWrapText(true);
+        ta.setPrefRowCount(40);
+        ta.setStyle("-fx-font-family: 'SFMono-Regular', 'JetBrains Mono', 'Consolas', monospace; -fx-font-size: 12px;");
+
+        VBox box = new VBox(10, new Label("Offline JSON spec" + (rdg != null && !rdg.isBlank() ? " for " + rdg : "")), ta);
+        box.setPadding(new javafx.geometry.Insets(12));
+        box.setFillWidth(true);
+
+        ScrollPane sp = new ScrollPane(box);
+        sp.setFitToWidth(true);
+        sp.setFitToHeight(true);
+
+        Stage stage = new Stage();
+        stage.setTitle("Spec Preview" + (rdg != null && !rdg.isBlank() ? " - " + rdg : ""));
+        stage.setScene(new Scene(sp, 1100, 700));
+        stage.show();
+    }
+
     private void writeRagScenarios() {
         String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
         if (rdg == null || rdg.isBlank()) {
@@ -1245,6 +1276,12 @@ public class UIController {
         }
         if (btnRagOpenPreviewWindow != null) {
             btnRagOpenPreviewWindow.setDisable(!hasScenarioPreview());
+        }
+        if (btnRagOpenSpecPreview != null) {
+            boolean hasPayload = taRagOutput != null
+                    && taRagOutput.getText() != null
+                    && !taRagOutput.getText().isBlank();
+            btnRagOpenSpecPreview.setDisable(!hasPayload);
         }
         if (btnRagWriteSheet != null) {
             boolean hasPayload = taRagOutput != null

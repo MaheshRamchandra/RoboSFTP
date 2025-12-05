@@ -168,6 +168,10 @@
                                             </HBox>
                                             <Label text="Offline JSON spec:"/>
                                             <TextArea fx:id="taRagOutput" prefRowCount="12" wrapText="true" VBox.vgrow="ALWAYS"/>
+                                            <HBox spacing="8">
+                                                <Button fx:id="btnRagOpenSpecPreview" text="Open Spec Preview"/>
+                                                <Label text="View offline spec in a large, read-only window."/>
+                                            </HBox>
                                         </VBox>
                                     </content>
                                 </TitledPane>
