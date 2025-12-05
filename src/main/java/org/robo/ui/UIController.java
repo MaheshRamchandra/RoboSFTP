@@ -260,12 +260,6 @@ public class UIController {
             return;
         }
 
-        String scenarioName = tfValidationScenario.getText().trim();
-        if (scenarioName.isEmpty()) {
-            log("Provide a scenario name for the decoded Excel.");
-            return;
-        }
-
         String toDecode = payload.trim();
 
         btnValidateString.setDisable(true);
@@ -287,12 +281,11 @@ public class UIController {
                                 .append("\n");
                     }
                     if (preview.length() > 0) preview.setLength(preview.length() - 1);
-                    ExcelProcessor.appendDecodedRow(excelFile, template, scenarioName, decoded);
                     validateAgainstKb(toDecode, preview);
                     Platform.runLater(() -> {
                         taValidationPreview.setText(preview.toString());
                         resetPreviewSearchState();
-                        log("Appended decoded row to: " + excelFile.getAbsolutePath());
+                        log("Validation completed.");
                     });
                 } catch (Exception ex) {
                     ex.printStackTrace();
