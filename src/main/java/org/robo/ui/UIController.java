@@ -19,6 +19,7 @@ import org.robo.rag.RagScenarioGenerator;
 import org.robo.rag.RagService;
 import org.robo.rag.RagSpecBuilder;
 import org.robo.rag.DependencyRuleService;
+import org.robo.rag.RagStringValidator;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -287,6 +288,7 @@ public class UIController {
                     }
                     if (preview.length() > 0) preview.setLength(preview.length() - 1);
                     ExcelProcessor.appendDecodedRow(excelFile, template, scenarioName, decoded);
+                    validateAgainstKb(toDecode, preview);
                     Platform.runLater(() -> {
                         taValidationPreview.setText(preview.toString());
                         resetPreviewSearchState();
@@ -305,6 +307,43 @@ public class UIController {
             }
         };
         new Thread(task).start();
+    }
+
+    private void validateAgainstKb(String generatedString, StringBuilder previewBuilder) {
+        if (!ragStore.isLoaded()) {
+            ragLog("KB not loaded; skipping KB validation.");
+            return;
+        }
+        String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
+        if (rdg == null || rdg.isBlank()) {
+            ragLog("Select an RDG to run KB validation.");
+            return;
+        }
+        try {
+            List<RagFieldRecord> records = ragService.retrieve(rdg, ragStore.defaultSections());
+            if (records == null || records.isEmpty()) {
+                ragLog("No KB records found for " + rdg + " to validate against.");
+                return;
+            }
+            List<RagFieldRecord> ordered = RagScenarioGenerator.ordered(records);
+            List<String> tokens = java.util.Arrays.asList(generatedString.split("\\|", -1));
+            RagStringValidator.ValidationResult res = RagStringValidator.validate(tokens, ordered);
+
+            previewBuilder.append("\n\n--- KB Validation ---\n");
+            if (res.errors().isEmpty() && res.warnings().isEmpty()) {
+                previewBuilder.append("OK: All values match KB ordering and rules.\n");
+            } else {
+                for (String err : res.errors()) {
+                    previewBuilder.append("ERROR: ").append(err).append("\n");
+                }
+                for (String warn : res.warnings()) {
+                    previewBuilder.append("WARN: ").append(warn).append("\n");
+                }
+            }
+            ragLog("KB validation completed for " + rdg + " (" + res.errors().size() + " error(s), " + res.warnings().size() + " warning(s)).");
+        } catch (Exception ex) {
+            ragLog("KB validation failed: " + ex.getMessage());
+        }
     }
 
     // --- RAG TAB ---
