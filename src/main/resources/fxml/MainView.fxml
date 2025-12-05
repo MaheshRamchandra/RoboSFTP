@@ -5,6 +5,8 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -42,7 +44,7 @@
         <Button fx:id="btnChooseEncode" text="Choose"/>
     </HBox>
 
-    <TabPane>
+    <TabPane VBox.vgrow="NEVER" prefHeight="-1" maxHeight="-1">
         <tabs>
             <Tab text="Generator" closable="false">
                 <content>
@@ -91,6 +93,11 @@
                                 </HBox>
                             </VBox>
                         </TitledPane>
+                        <HBox spacing="8">
+                            <Label text="Output Path:"/>
+                            <TextField fx:id="tfOutput" editable="false" prefWidth="520"/>
+                            <Button fx:id="btnOpenFolder" text="Open Folder"/>
+                        </HBox>
                     </VBox>
                 </content>
             </Tab>
@@ -157,27 +164,10 @@
                                                 <Label text="RDG:"/>
                                                 <ComboBox fx:id="cbRagRdg" prefWidth="220"/>
                                                 <Button fx:id="btnRagRetrieve" text="Retrieve Fields"/>
+                                                <Button fx:id="btnRagGenerateSpec" text="Generate Spec"/>
                                             </HBox>
-                                            <Label text="Retrieved field records:"/>
-                                            <TextArea fx:id="taRagRetrieved" prefRowCount="6" wrapText="true"/>
-                                        </VBox>
-                                    </content>
-                                </TitledPane>
-
-                                <TitledPane text="Generation (LLM optional)" expanded="true">
-                                    <content>
-                                        <VBox spacing="8">
-                                            <HBox spacing="8">
-                                                <Label text="API Base:"/>
-                                                <TextField fx:id="tfRagApiBase" prefWidth="220"/>
-                                                <Label text="Model:"/>
-                                                <TextField fx:id="tfRagModel" prefWidth="160"/>
-                                                <Label text="API Key:"/>
-                                                <PasswordField fx:id="pfRagApiKey" prefWidth="220"/>
-                                                <Button fx:id="btnRagGenerate" text="Generate Spec"/>
-                                            </HBox>
-                                            <Label text="LLM/offline JSON output:"/>
-                                            <TextArea fx:id="taRagOutput" prefRowCount="8" wrapText="true"/>
+                                            <Label text="Offline JSON spec:"/>
+                                            <TextArea fx:id="taRagOutput" prefRowCount="12" wrapText="true" VBox.vgrow="ALWAYS"/>
                                         </VBox>
                                     </content>
                                 </TitledPane>
@@ -199,15 +189,57 @@
                                                 <Button fx:id="btnRagWriteScenarios" text="Write Sheet (RDG* data)"/>
                                             </HBox>
                                             <HBox spacing="8">
-                                                <Label text="Mix (e.g. FIM:1,MBI:3):"/>
+                                                <Label text="Mix (single tool, e.g. FIM:3):"/>
                                                 <TextField fx:id="tfRagScenarioMix" prefWidth="240"/>
                                             </HBox>
+                                            <HBox spacing="8">
+                                                <Button fx:id="btnRagPreviewScenarios" text="Preview Scenarios"/>
+                                                <Label text="Edit cells in the table below before saving."/>
+                                                <Button fx:id="btnRagSavePreview" text="Save Preview"/>
+                                                <Button fx:id="btnRagOpenPreviewWindow" text="Open Preview Window"/>
+                                            </HBox>
+                                            <ScrollPane fitToWidth="true" prefHeight="320" VBox.vgrow="ALWAYS">
+                                                <content>
+                                                    <VBox fx:id="vbRagScenarioPreviews" spacing="10" />
+                                                </content>
+                                            </ScrollPane>
                                         </VBox>
                                     </content>
                                 </TitledPane>
 
                                 <Label text="RAG Log:"/>
-                                <TextArea fx:id="taRagLog" prefRowCount="6" wrapText="true"/>
+                                <TextArea fx:id="taRagLog" prefRowCount="8" wrapText="true" VBox.vgrow="ALWAYS"/>
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                </content>
+            </Tab>
+
+            <Tab text="Dependency Triggering" closable="false">
+                <content>
+                    <ScrollPane fitToWidth="true" fitToHeight="true">
+                        <content>
+                            <VBox spacing="10">
+                                <padding>
+                                    <Insets top="12" right="12" bottom="12" left="12"/>
+                                </padding>
+                                <Label text="Dependency Triggering Rules" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                                <HBox spacing="8">
+                                    <Label text="Rules JSON:"/>
+                                    <TextField fx:id="tfDepRules" editable="false" prefWidth="400"/>
+                                    <Button fx:id="btnDepChooseRules" text="Choose"/>
+                                    <Button fx:id="btnDepLoadRules" text="Load"/>
+                                </HBox>
+                                <Label wrapText="true" text="Lists fields marked 'Yes (refer to rule)' and summarizes when they become mandatory vs optional based on their rule text."/>
+                                <TableView fx:id="tblDepRules" prefHeight="500" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colDepName" text="Field" prefWidth="180"/>
+                                        <TableColumn fx:id="colDepRequired" text="Required" prefWidth="140"/>
+                                        <TableColumn fx:id="colDepMandatoryWhen" text="Mandatory When" prefWidth="320"/>
+                                        <TableColumn fx:id="colDepOptionalWhen" text="Optional Otherwise" prefWidth="260"/>
+                                        <TableColumn fx:id="colDepRule" text="Rule" prefWidth="420"/>
+                                    </columns>
+                                </TableView>
                             </VBox>
                         </content>
                     </ScrollPane>
@@ -215,12 +247,6 @@
             </Tab>
         </tabs>
     </TabPane>
-
-    <HBox spacing="8">
-        <Label text="Output Path:"/>
-        <TextField fx:id="tfOutput" editable="false" prefWidth="520"/>
-        <Button fx:id="btnOpenFolder" text="Open Folder"/>
-    </HBox>
 
     <ProgressBar fx:id="progressBar" prefWidth="700" progress="0"/>
 

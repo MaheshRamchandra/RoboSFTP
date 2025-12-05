@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.robo.core.CryptoUtil;
 import org.robo.core.ExcelProcessor;
 import org.robo.core.SftpUtil;
-import org.robo.core.Utils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.robo.rag.LocalJsonVectorStore;
-import org.robo.rag.OpenAiLlmClient;
-import org.robo.rag.OllamaLlmClient;
 import org.robo.rag.RagExcelWriter;
 import org.robo.rag.RagFieldRecord;
 import org.robo.rag.RagScenarioExcelWriter;
@@ -17,18 +19,34 @@ import org.robo.rag.RagScenarioGenerator;
 import org.robo.rag.RagService;
 import org.robo.rag.RagSpecBuilder;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Locale;
 
 public class UIController {
 
@@ -70,13 +88,9 @@ public class UIController {
     @FXML public Button btnRagLoadSample;
     @FXML public ComboBox<String> cbRagRdg;
     @FXML public Button btnRagRetrieve;
-    @FXML public TextArea taRagRetrieved;
+    @FXML public Button btnRagGenerateSpec;
     @FXML public TextArea taRagOutput;
     @FXML public TextArea taRagLog;
-    @FXML public TextField tfRagApiBase;
-    @FXML public TextField tfRagModel;
-    @FXML public PasswordField pfRagApiKey;
-    @FXML public Button btnRagGenerate;
     @FXML public TextField tfRagWorkbook;
     @FXML public Button btnRagChooseWorkbook;
     @FXML public Button btnRagWriteSheet;
@@ -84,6 +98,20 @@ public class UIController {
     @FXML public Button btnRagWriteScenarios;
     @FXML public TextField tfRagScenarioMix;
     @FXML public ComboBox<String> cbRagAssessmentTool;
+    @FXML public Button btnRagPreviewScenarios;
+    @FXML public Button btnRagSavePreview;
+    @FXML public Button btnRagOpenPreviewWindow;
+    @FXML public VBox vbRagScenarioPreviews;
+    // Dependency tab
+    @FXML public TextField tfDepRules;
+    @FXML public Button btnDepChooseRules;
+    @FXML public Button btnDepLoadRules;
+    @FXML public TableView<DependencyRuleRow> tblDepRules;
+    @FXML public TableColumn<DependencyRuleRow, String> colDepName;
+    @FXML public TableColumn<DependencyRuleRow, String> colDepRequired;
+    @FXML public TableColumn<DependencyRuleRow, String> colDepMandatoryWhen;
+    @FXML public TableColumn<DependencyRuleRow, String> colDepOptionalWhen;
+    @FXML public TableColumn<DependencyRuleRow, String> colDepRule;
 
     private File excelFile;
     private File encodeFile;
@@ -98,6 +126,9 @@ public class UIController {
     private final RagService ragService = new RagService(ragStore);
     private final ObjectMapper ragMapper = new ObjectMapper();
     private List<RagFieldRecord> lastRagRecords = new ArrayList<>();
+    private final java.util.Map<String, PreviewBundle> previewBundles = new java.util.HashMap<>();
+    private File depRulesFile;
+    private final ObservableList<DependencyRuleRow> depRuleRows = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -150,6 +181,7 @@ public class UIController {
             }
         });
         initRagTab();
+        initDependencyTab();
     }
 
     private void chooseExcel() {
@@ -280,27 +312,54 @@ public class UIController {
             if (!cbRagRdg.getItems().isEmpty()) {
                 cbRagRdg.getSelectionModel().select(0);
             }
+            cbRagRdg.setOnAction(e -> updateButtonStates());
         }
-        if (tfRagApiBase != null) tfRagApiBase.setText("https://api.openai.com/v1");
-        if (tfRagModel != null) tfRagModel.setText("gpt-4o-mini");
         if (tfRagWorkbook != null) {
             File def = new File(System.getProperty("user.home"), "RDG_Specs.xlsx");
             ragWorkbookFile = def;
             tfRagWorkbook.setText(def.getAbsolutePath());
         }
+        if (vbRagScenarioPreviews != null) {
+            vbRagScenarioPreviews.getChildren().clear();
+        }
 
         if (btnRagChooseKb != null) btnRagChooseKb.setOnAction(e -> chooseRagKb());
         if (btnRagLoadSample != null) btnRagLoadSample.setOnAction(e -> loadSampleRagKb());
         if (btnRagRetrieve != null) btnRagRetrieve.setOnAction(e -> retrieveRagRecords());
-        if (btnRagGenerate != null) btnRagGenerate.setOnAction(e -> generateRagSpec());
+        if (btnRagGenerateSpec != null) btnRagGenerateSpec.setOnAction(e -> generateRagSpecOffline());
         if (btnRagChooseWorkbook != null) btnRagChooseWorkbook.setOnAction(e -> chooseRagWorkbook());
         if (btnRagWriteSheet != null) btnRagWriteSheet.setOnAction(e -> writeRagSheet());
         if (btnRagWriteScenarios != null) btnRagWriteScenarios.setOnAction(e -> writeRagScenarios());
+        if (btnRagPreviewScenarios != null) btnRagPreviewScenarios.setOnAction(e -> previewRagScenarios());
+        if (btnRagSavePreview != null) btnRagSavePreview.setOnAction(e -> saveCurrentPreview());
+        if (btnRagOpenPreviewWindow != null) btnRagOpenPreviewWindow.setOnAction(e -> openPreviewWindow());
         if (cbRagAssessmentTool != null) {
             cbRagAssessmentTool.getItems().setAll("FIM", "MBI");
             cbRagAssessmentTool.getSelectionModel().select("FIM");
         }
         updateButtonStates();
+    }
+
+    private void initDependencyTab() {
+        if (tblDepRules != null) {
+            tblDepRules.setItems(depRuleRows);
+            tblDepRules.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            colDepName.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().name()));
+            colDepRequired.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().required()));
+            colDepMandatoryWhen.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().mandatoryWhen()));
+            colDepOptionalWhen.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().optionalWhen()));
+            colDepRule.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().rule()));
+            tblDepRules.setPlaceholder(new Label("Load dependency rules JSON to view conditional mandatory logic."));
+        }
+        if (btnDepChooseRules != null) btnDepChooseRules.setOnAction(e -> chooseDepRules());
+        if (btnDepLoadRules != null) btnDepLoadRules.setOnAction(e -> loadDepRules());
+
+        // Default path
+        File def = new File("vector-kb/dependency_fields.json");
+        if (def.exists()) {
+            depRulesFile = def;
+            if (tfDepRules != null) tfDepRules.setText(def.getAbsolutePath());
+        }
     }
 
     private void chooseRagKb() {
@@ -309,15 +368,15 @@ public class UIController {
         File f = fc.showOpenDialog(null);
         if (f != null) {
             try {
-                ragStore.refresh(f);
-                ragKbFile = f;
-                if (tfRagKb != null) tfRagKb.setText(f.getAbsolutePath());
-                lastRagRecords = new ArrayList<>();
-                if (taRagRetrieved != null) taRagRetrieved.clear();
-                ragLog("Loaded knowledge base: " + f.getName());
-            } catch (IOException ex) {
-                ragLog("Failed to load KB: " + ex.getMessage());
-            }
+            ragStore.refresh(f);
+            ragKbFile = f;
+            if (tfRagKb != null) tfRagKb.setText(f.getAbsolutePath());
+            lastRagRecords = new ArrayList<>();
+            clearAllScenarioPreviews();
+            ragLog("Loaded knowledge base: " + f.getName());
+        } catch (IOException ex) {
+            ragLog("Failed to load KB: " + ex.getMessage());
+        }
         }
         updateButtonStates();
     }
@@ -328,7 +387,7 @@ public class UIController {
             ragKbFile = null;
             if (tfRagKb != null) tfRagKb.setText("classpath:/rag/sample_rdg_fields.json");
             lastRagRecords = new ArrayList<>();
-            if (taRagRetrieved != null) taRagRetrieved.clear();
+            clearAllScenarioPreviews();
             ragLog("Loaded bundled sample knowledge base.");
         } catch (IOException ex) {
             ragLog("Failed to load sample KB: " + ex.getMessage());
@@ -348,9 +407,6 @@ public class UIController {
         }
         try {
             lastRagRecords = ragService.retrieve(rdg, ragStore.defaultSections());
-            String json = ragMapper.writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(lastRagRecords.stream().map(RagFieldRecord::toSpecMap).toList());
-            if (taRagRetrieved != null) taRagRetrieved.setText(json);
             ragLog("Retrieved " + lastRagRecords.size() + " field records for RDG " + rdg
                     + " from " + ragStore.sourceDescription());
         } catch (Exception ex) {
@@ -359,7 +415,7 @@ public class UIController {
         updateButtonStates();
     }
 
-    private void generateRagSpec() {
+    private void generateRagSpecOffline() {
         String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
         if (rdg == null || rdg.isBlank()) {
             ragLog("Select an RDG first.");
@@ -370,41 +426,23 @@ public class UIController {
             return;
         }
 
-        String apiKey = pfRagApiKey != null ? pfRagApiKey.getText() : "";
-        boolean useLlm = apiKey != null && !apiKey.isBlank();
-
-        if (btnRagGenerate != null) btnRagGenerate.setDisable(true);
+        if (btnRagGenerateSpec != null) btnRagGenerateSpec.setDisable(true);
         progressBar.setProgress(-1);
 
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {
                 try {
-                    String output;
-                    if (useLlm) {
-                        String apiBase = tfRagApiBase.getText().trim();
-                        String model = tfRagModel.getText().trim().isEmpty() ? "gpt-4o-mini" : tfRagModel.getText().trim();
-                        boolean useOllama = apiBase.toLowerCase().contains("ollama") || apiBase.contains("/api/generate");
-                        if (useOllama) {
-                            OllamaLlmClient client = new OllamaLlmClient(apiBase, apiKey.trim(), model);
-                            output = ragService.callLlm(client, rdg, lastRagRecords);
-                        } else {
-                            OpenAiLlmClient client = new OpenAiLlmClient(apiBase, apiKey.trim(), model);
-                            output = ragService.callLlm(client, rdg, lastRagRecords);
-                        }
-                    } else {
-                        output = ragService.offlineSpec(lastRagRecords);
-                    }
-                    String finalOutput = output;
+                    String output = ragService.offlineSpec(lastRagRecords);
                     Platform.runLater(() -> {
-                        if (taRagOutput != null) taRagOutput.setText(finalOutput);
+                        if (taRagOutput != null) taRagOutput.setText(output);
                     });
-                    ragLog((useLlm ? "LLM" : "Offline") + " spec generated for RDG " + rdg + ".");
+                    ragLog("Offline spec generated for RDG " + rdg + ".");
                 } catch (Exception ex) {
                     ragLog("RAG generation failed: " + ex.getMessage());
                 } finally {
                     Platform.runLater(() -> {
-                        if (btnRagGenerate != null) btnRagGenerate.setDisable(false);
+                        if (btnRagGenerateSpec != null) btnRagGenerateSpec.setDisable(false);
                         progressBar.setProgress(0);
                         updateButtonStates();
                     });
@@ -413,6 +451,308 @@ public class UIController {
             }
         };
         new Thread(task).start();
+    }
+
+    private void previewRagScenarios() {
+        String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
+        ScenarioData data = computeScenarioData();
+        if (data == null || rdg == null || rdg.isBlank()) return;
+        renderScenarioPreview(rdg, data);
+        ragLog("Preview ready for " + rdg + " (+" + data.rows().size() + " row(s)): " + data.summary());
+        updateButtonStates();
+    }
+
+    private ScenarioData computeScenarioData() {
+        String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
+        if (rdg == null || rdg.isBlank()) {
+            ragLog("Select an RDG first.");
+            return null;
+        }
+        if (lastRagRecords == null || lastRagRecords.isEmpty()) {
+            ragLog("Retrieve field records before generating scenarios.");
+            return null;
+        }
+
+        int scenarioCount = 1;
+        try {
+            if (tfRagScenarioCount != null && tfRagScenarioCount.getText() != null && !tfRagScenarioCount.getText().isBlank()) {
+                scenarioCount = Math.max(1, Integer.parseInt(tfRagScenarioCount.getText().trim()));
+            }
+        } catch (NumberFormatException ex) {
+            ragLog("Invalid scenario count, defaulting to 1.");
+            scenarioCount = 1;
+        }
+
+        String mixText = tfRagScenarioMix != null ? tfRagScenarioMix.getText() : "";
+        try {
+            List<RagFieldRecord> rdgFiltered = RagScenarioGenerator.filterByRdgBlocks(lastRagRecords, rdg);
+
+            Map<String, Integer> mixCounts = parseMixCounts(mixText);
+            if (!mixCounts.isEmpty()) {
+                if (mixCounts.size() > 1) {
+                    ragLog("Mixing multiple assessment tools in one sheet is not supported. Please run them separately: " + mixText);
+                    return null;
+                }
+                Map.Entry<String, Integer> entry = mixCounts.entrySet().iterator().next();
+                String tool = entry.getKey();
+                int cnt = entry.getValue();
+                tool = normalizeTool(tool);
+
+                List<RagFieldRecord> filtered = RagScenarioGenerator.filterByAssessmentTool(rdgFiltered, tool);
+                List<RagFieldRecord> ordered = RagScenarioGenerator.ordered(filtered);
+                List<String> headers = RagScenarioGenerator.buildHeaders(ordered);
+                List<List<String>> scenarios = RagScenarioGenerator.generateScenarios(ordered, cnt);
+                if (scenarios.isEmpty()) {
+                    ragLog("No scenarios generated for " + rdg + " (" + tool + ").");
+                    return null;
+                }
+                return new ScenarioData(headers, scenarios, "Tool: " + tool + " x " + cnt, tool);
+            } else {
+                String tool = cbRagAssessmentTool != null ? cbRagAssessmentTool.getValue() : "FIM";
+                tool = normalizeTool(tool);
+                List<RagFieldRecord> filtered = RagScenarioGenerator.filterByAssessmentTool(rdgFiltered, tool);
+                List<RagFieldRecord> ordered = RagScenarioGenerator.ordered(filtered);
+                List<String> headers = RagScenarioGenerator.buildHeaders(ordered);
+                List<List<String>> scenarios = RagScenarioGenerator.generateScenarios(ordered, scenarioCount);
+                if (scenarios.isEmpty()) {
+                    ragLog("No scenarios generated for " + rdg + ".");
+                    return null;
+                }
+                return new ScenarioData(headers, scenarios, "Tool: " + tool + " x " + scenarioCount, tool);
+            }
+        } catch (Exception ex) {
+            ragLog("Failed to build scenarios: " + ex.getMessage());
+            return null;
+        }
+    }
+
+    private LinkedHashMap<String, Integer> parseMixCounts(String mixText) {
+        LinkedHashMap<String, Integer> counts = new LinkedHashMap<>();
+        if (mixText == null || mixText.isBlank()) return counts;
+
+        String[] parts = mixText.split(",");
+        for (String part : parts) {
+            if (part == null || part.isBlank()) continue;
+            String[] kv = part.split(":");
+            if (kv.length != 2) {
+                ragLog("Invalid mix entry (use TOOL:count): " + part.trim());
+                continue;
+            }
+            String tool = kv[0].trim().toUpperCase();
+            if (tool.isEmpty()) continue;
+            int cnt;
+            try {
+                cnt = Math.max(1, Integer.parseInt(kv[1].trim()));
+            } catch (NumberFormatException ex) {
+                ragLog("Invalid count for " + tool + ", skipping.");
+                continue;
+            }
+            counts.merge(tool, cnt, Integer::sum);
+        }
+        return counts;
+    }
+
+    private void renderScenarioPreview(String rdg, ScenarioData data) {
+        if (vbRagScenarioPreviews == null) return;
+        String key = normalizeRdg(rdg);
+        PreviewBundle bundle = previewBundles.get(key);
+        boolean isNew = bundle == null;
+
+        if (bundle == null) {
+            TableView<Map<String, String>> tbl = new TableView<>();
+            tbl.setEditable(true);
+            tbl.setPrefHeight(260);
+            tbl.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+            ObservableList<Map<String, String>> rows = FXCollections.observableArrayList();
+            Label lbl = new Label();
+            bundle = new PreviewBundle(key, rdg, tbl, rows, lbl, new ArrayList<>(), "", normalizeTool(data.tool()));
+            previewBundles.put(key, bundle);
+
+            VBox wrapper = new VBox(4);
+            wrapper.getChildren().addAll(lbl, tbl);
+            wrapper.setFillWidth(true);
+            vbRagScenarioPreviews.getChildren().add(wrapper);
+        }
+
+        bundle.headers.clear();
+        bundle.headers.addAll(data.headers());
+        bundle.summary = data.summary();
+        bundle.tool = normalizeTool(data.tool());
+        ensureColumns(bundle.table, bundle.headers);
+
+        bundle.rows.clear();
+        for (List<String> rowList : data.rows()) {
+            Map<String, String> rowMap = FXCollections.observableHashMap();
+            for (int i = 0; i < bundle.headers.size(); i++) {
+                String header = bundle.headers.get(i);
+                String value = i < rowList.size() ? rowList.get(i) : "";
+                rowMap.put(header, value);
+            }
+            bundle.rows.add(rowMap);
+        }
+
+        bundle.table.setItems(bundle.rows);
+        bundle.titleLabel.setText("Preview - " + rdg + " (" + bundle.rows.size() + " scenario(s); " + bundle.summary + ")");
+
+        if (isNew) {
+            bundle.table.refresh();
+        }
+    }
+
+    private void ensureColumns(TableView<Map<String, String>> table, List<String> headers) {
+        table.getColumns().clear();
+        for (String header : headers) {
+            TableColumn<Map<String, String>, String> col = new TableColumn<>(header);
+            col.setCellValueFactory(cd -> {
+                Map<String, String> row = cd.getValue();
+                String val = row != null ? row.getOrDefault(header, "") : "";
+                return new SimpleStringProperty(val);
+            });
+            col.setCellFactory(column -> createEditingCell());
+            col.setOnEditCommit(event -> {
+                Map<String, String> row = event.getRowValue();
+                if (row != null) {
+                    row.put(header, event.getNewValue());
+                }
+            });
+            double width = columnWidth(header);
+            col.setPrefWidth(width);
+            col.setMinWidth(width);
+            table.getColumns().add(col);
+        }
+    }
+
+    private double columnWidth(String header) {
+        if ("Name".equalsIgnoreCase(header)) return 180;
+        if (header.startsWith("M##")) return 150;
+        int len = header != null ? header.length() : 0;
+        return Math.max(110, Math.min(220, len * 9.0));
+    }
+
+    private TextFieldTableCell<Map<String, String>, String> createEditingCell() {
+        StringConverter<String> converter = new StringConverter<>() {
+            @Override
+            public String toString(String object) {
+                return object == null ? "" : object;
+            }
+
+            @Override
+            public String fromString(String string) {
+                return string;
+            }
+        };
+        return new TextFieldTableCell<>(converter) {
+            @Override
+            public void startEdit() {
+                super.startEdit();
+                TextField tf = (TextField) getGraphic();
+                if (tf != null) {
+                    tf.focusedProperty().addListener((obs, was, isNow) -> {
+                        if (!isNow && isEditing()) {
+                            commitEdit(tf.getText());
+                        }
+                    });
+                }
+            }
+        };
+    }
+
+    private void openPreviewWindow() {
+        commitScenarioEdits();
+        PreviewBundle bundle = currentPreviewBundle();
+        if (bundle == null) {
+            ragLog("No preview available to open.");
+            return;
+        }
+        TableView<Map<String, String>> tbl = new TableView<>();
+        tbl.setEditable(true);
+        tbl.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        ensureColumns(tbl, bundle.headers);
+
+        ObservableList<Map<String, String>> copyRows = FXCollections.observableArrayList();
+        for (Map<String, String> row : bundle.rows) {
+            Map<String, String> copy = FXCollections.observableHashMap();
+            copy.putAll(row);
+            copyRows.add(copy);
+        }
+        tbl.setItems(copyRows);
+
+        VBox content = new VBox(8);
+        content.setPadding(new javafx.geometry.Insets(10));
+        Label title = new Label("Preview - " + bundle.rdgDisplay + " (" + bundle.rows.size() + " scenario(s); " + bundle.summary + ")");
+        Button saveBtn = new Button("Save");
+        saveBtn.setOnAction(e -> {
+            commitScenarioEdits(tbl);
+            bundle.rows.clear();
+            for (Map<String, String> row : tbl.getItems()) {
+                Map<String, String> copy = FXCollections.observableHashMap();
+                copy.putAll(row);
+                bundle.rows.add(copy);
+            }
+            bundle.table.setItems(bundle.rows);
+            ragLog("Preview saved to main view for " + bundle.rdgDisplay + ".");
+        });
+        content.getChildren().addAll(title, tbl, saveBtn);
+
+        ScrollPane sp = new ScrollPane(content);
+        sp.setFitToWidth(true);
+        sp.setFitToHeight(true);
+
+        Stage stage = new Stage();
+        stage.setTitle("Preview - " + bundle.rdgDisplay);
+        stage.setScene(new Scene(sp, 1200, 700));
+        stage.show();
+    }
+
+    private List<List<String>> previewRowsAsLists() {
+        PreviewBundle bundle = currentPreviewBundle();
+        if (bundle == null) return List.of();
+        List<List<String>> rows = new ArrayList<>();
+        for (Map<String, String> map : bundle.rows) {
+            List<String> row = new ArrayList<>();
+            for (String header : bundle.headers) {
+                row.add(map.getOrDefault(header, ""));
+            }
+            rows.add(row);
+        }
+        return rows;
+    }
+
+    private boolean hasScenarioPreview() {
+        PreviewBundle bundle = currentPreviewBundle();
+        return bundle != null && !bundle.headers.isEmpty() && !bundle.rows.isEmpty();
+    }
+
+    private void clearAllScenarioPreviews() {
+        previewBundles.clear();
+        if (vbRagScenarioPreviews != null) {
+            vbRagScenarioPreviews.getChildren().clear();
+        }
+    }
+
+    private void commitScenarioEdits() {
+        PreviewBundle bundle = currentPreviewBundle();
+        if (bundle != null && bundle.table.getEditingCell() != null) {
+            bundle.table.edit(-1, null); // end editing, committing focus-lost edits via our cell factory
+        }
+    }
+
+    private void commitScenarioEdits(TableView<Map<String, String>> table) {
+        if (table != null && table.getEditingCell() != null) {
+            table.edit(-1, null);
+        }
+    }
+
+    private void saveCurrentPreview() {
+        commitScenarioEdits();
+        PreviewBundle bundle = currentPreviewBundle();
+        if (bundle == null) {
+            ragLog("No preview to save.");
+            return;
+        }
+        bundle.table.refresh();
+        ragLog("Preview saved for " + bundle.rdgDisplay + ".");
+        updateButtonStates();
     }
 
     private void chooseRagWorkbook() {
@@ -432,6 +772,72 @@ public class UIController {
         return new File(f.getParentFile(), f.getName() + ".xlsx");
     }
 
+    private void chooseDepRules() {
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        File f = fc.showOpenDialog(null);
+        if (f != null) {
+            depRulesFile = f;
+            if (tfDepRules != null) tfDepRules.setText(f.getAbsolutePath());
+        }
+        updateButtonStates();
+    }
+
+    private void loadDepRules() {
+        if (depRulesFile == null) {
+            if (tfDepRules != null && tfDepRules.getText() != null && !tfDepRules.getText().isBlank()) {
+                File f = new File(tfDepRules.getText().trim());
+                if (f.exists()) depRulesFile = f;
+            }
+        }
+        if (depRulesFile == null || !depRulesFile.exists()) {
+            ragLog("Dependency rules file not found. Choose a JSON file.");
+            return;
+        }
+        try {
+            List<Map<String, Object>> list = ragMapper.readValue(depRulesFile, new TypeReference<>() {});
+            depRuleRows.clear();
+            for (Map<String, Object> m : list) {
+                String required = getString(m.get("Required"));
+                if (required == null || !required.toLowerCase(Locale.ROOT).contains("refer to rule")) continue;
+                String name = getString(m.get("Name"));
+                String rule = getString(m.get("Rule"));
+                String mandatoryWhen = summarizeMandatory(rule);
+                String optionalWhen = summarizeOptional(rule);
+                depRuleRows.add(new DependencyRuleRow(name, required, mandatoryWhen, optionalWhen, rule));
+            }
+            ragLog("Loaded " + depRuleRows.size() + " dependency rules from " + depRulesFile.getAbsolutePath());
+            if (depRuleRows.isEmpty()) {
+                ragLog("No 'refer to rule' entries found in file.");
+            }
+        } catch (Exception ex) {
+            ragLog("Failed to load dependency rules: " + ex.getMessage());
+        }
+        updateButtonStates();
+    }
+
+    private String summarizeMandatory(String rule) {
+        if (rule == null || rule.isBlank()) return "Refer to rule text.";
+        String[] parts = rule.split("\\.|\n");
+        for (String p : parts) {
+            String t = p.trim();
+            if (!t.isEmpty()) {
+                if (t.length() > 180) return t.substring(0, 177) + "...";
+                return t;
+            }
+        }
+        return rule.length() > 180 ? rule.substring(0, 177) + "..." : rule;
+    }
+
+    private String summarizeOptional(String rule) {
+        if (rule == null || rule.isBlank()) return "Otherwise optional.";
+        return "Otherwise optional (when condition above is not met).";
+    }
+
+    private String getString(Object obj) {
+        return obj == null ? "" : obj.toString();
+    }
+
     private void writeRagSheet() {
         String rdg = cbRagRdg != null ? cbRagRdg.getValue() : null;
         if (rdg == null || rdg.isBlank()) {
@@ -449,7 +855,7 @@ public class UIController {
         }
         try {
             List<RagFieldRecord> records = RagSpecBuilder.parse(payload);
-            String sheetName = "RDG_" + rdg.replaceAll("\\s+", "");
+            String sheetName = sheetNameForSpec(rdg);
             RagExcelWriter.writeSpec(ragWorkbookFile, sheetName, records);
             ragLog("Wrote sheet '" + sheetName + "' to " + ragWorkbookFile.getAbsolutePath());
         } catch (Exception ex) {
@@ -468,79 +874,98 @@ public class UIController {
             ragLog("Choose an output workbook path.");
             return;
         }
-        if (lastRagRecords == null || lastRagRecords.isEmpty()) {
-            ragLog("Retrieve field records before writing scenarios.");
+        boolean hasRecords = lastRagRecords != null && !lastRagRecords.isEmpty();
+        if (!hasRecords && !hasScenarioPreview()) {
+            ragLog("Retrieve field records or build a preview before writing scenarios.");
             return;
         }
-        int scenarioCount = 1;
-        try {
-            if (tfRagScenarioCount != null && tfRagScenarioCount.getText() != null && !tfRagScenarioCount.getText().isBlank()) {
-                scenarioCount = Math.max(1, Integer.parseInt(tfRagScenarioCount.getText().trim()));
-            }
-        } catch (NumberFormatException ex) {
-            ragLog("Invalid scenario count, defaulting to 1.");
-            scenarioCount = 1;
-        }
 
         try {
-            String mixText = tfRagScenarioMix != null ? tfRagScenarioMix.getText() : "";
-            if (mixText != null && !mixText.isBlank()) {
-                List<RagFieldRecord> rdgFiltered = RagScenarioGenerator.filterByRdgBlocks(lastRagRecords, rdg);
-                List<RagFieldRecord> masterOrdered = RagScenarioGenerator.ordered(rdgFiltered);
-                List<String> headers = RagScenarioGenerator.buildHeaders(masterOrdered);
-                List<List<String>> allRows = new ArrayList<>();
+            boolean usingPreview = hasScenarioPreview();
+            commitScenarioEdits();
+            ScenarioData data = usingPreview
+                    ? previewDataForCurrentRdg()
+                    : computeScenarioData();
 
-                String[] parts = mixText.split(",");
-                int scenarioIdx = 1;
-                for (String part : parts) {
-                    String[] kv = part.split(":");
-                    if (kv.length != 2) continue;
-                    String tool = kv[0].trim().toUpperCase();
-                    int cnt;
-                    try {
-                        cnt = Math.max(1, Integer.parseInt(kv[1].trim()));
-                    } catch (NumberFormatException ex) {
-                        ragLog("Invalid count for " + tool + ", skipping.");
-                        continue;
-                    }
-                    List<RagFieldRecord> filtered = RagScenarioGenerator.filterByAssessmentTool(rdgFiltered, tool);
-                    List<RagFieldRecord> ordered = RagScenarioGenerator.ordered(filtered);
-                    List<List<String>> scenarios = RagScenarioGenerator.generateScenarios(ordered, cnt);
+            if (data == null) return;
 
-                    for (List<String> row : scenarios) {
-                        List<String> merged = new ArrayList<>();
-                        merged.add("Scenario" + scenarioIdx + "-" + tool);
-                        for (int i = 1; i < headers.size(); i++) {
-                            String h = headers.get(i);
-                            int idx = findIndexByHeader(ordered, h);
-                            merged.add(idx >= 0 && idx < row.size() ? row.get(idx) : "");
-                        }
-                        allRows.add(merged);
-                        scenarioIdx++;
-                    }
-                }
-                String sheetName = "RDG_" + rdg.replaceAll("\\s+", "");
-                RagScenarioExcelWriter.write(ragWorkbookFile, sheetName, headers, allRows);
-                ragLog("Scenario sheet '" + sheetName + "' written with mix '" + mixText + "' to " + ragWorkbookFile.getAbsolutePath());
-            } else {
-                List<RagFieldRecord> rdgFiltered = RagScenarioGenerator.filterByRdgBlocks(lastRagRecords, rdg);
-                List<RagFieldRecord> filtered = RagScenarioGenerator.filterByAssessmentTool(
-                        rdgFiltered,
-                        cbRagAssessmentTool != null ? cbRagAssessmentTool.getValue() : "FIM"
-                );
-                List<RagFieldRecord> ordered = RagScenarioGenerator.ordered(filtered);
-                List<String> headers = RagScenarioGenerator.buildHeaders(ordered);
-                List<List<String>> scenarios = RagScenarioGenerator.generateScenarios(ordered, scenarioCount);
-                String sheetName = "RDG_" + rdg.replaceAll("\\s+", "");
-                RagScenarioExcelWriter.write(ragWorkbookFile, sheetName, headers, scenarios);
-                ragLog("Scenario sheet '" + sheetName + "' written with " + scenarioCount + " scenario(s) using "
-                        + (cbRagAssessmentTool != null ? cbRagAssessmentTool.getValue() : "FIM")
-                        + " to " + ragWorkbookFile.getAbsolutePath());
+            String sheetName = sheetNameForData(rdg);
+            String requestedTool = normalizeTool(data.tool());
+            String existingTool = normalizeTool(detectExistingScenarioTool(ragWorkbookFile, sheetName));
+            if (!requestedTool.isEmpty() && !existingTool.isEmpty() && !existingTool.equals(requestedTool)) {
+                ragLog("Scenario sheet '" + sheetName + "' already contains " + existingTool
+                        + " scenarios. Create a separate RDG/sheet for " + requestedTool + ".");
+                return;
             }
+
+            RagScenarioExcelWriter.write(ragWorkbookFile, sheetName, data.headers(), data.rows());
+            ragLog("Scenario sheet '" + sheetName + "' written "
+                    + (usingPreview ? "from preview edits" : "(" + data.summary() + ")")
+                    + " to " + ragWorkbookFile.getAbsolutePath());
         } catch (Exception ex) {
             ragLog("Failed to write scenarios: " + ex.getMessage());
         }
         updateButtonStates();
+    }
+
+    private record ScenarioData(List<String> headers, List<List<String>> rows, String summary, String tool) {
+    }
+
+    private PreviewBundle currentPreviewBundle() {
+        String key = normalizeRdg(cbRagRdg != null ? cbRagRdg.getValue() : null);
+        if (key.isEmpty()) return null;
+        return previewBundles.get(key);
+    }
+
+    private ScenarioData previewDataForCurrentRdg() {
+        PreviewBundle bundle = currentPreviewBundle();
+        if (bundle == null) return null;
+        return new ScenarioData(new ArrayList<>(bundle.headers), previewRowsAsLists(), bundle.summary, bundle.tool);
+    }
+
+    private String sheetNameForSpec(String rdg) {
+        return "RDG_" + safeSheetName(rdg) + "_specs";
+    }
+
+    private String sheetNameForData(String rdg) {
+        return "RDG_" + safeSheetName(rdg);
+    }
+
+    private String safeSheetName(String rdg) {
+        String base = rdg == null ? "unknown" : rdg.trim();
+        base = base.replaceAll("[\\\\/*?:\\[\\]]", "_");
+        base = base.replaceAll("\\s+", "_");
+        return base;
+    }
+
+    private String normalizeRdg(String rdg) {
+        if (rdg == null) return "";
+        return rdg.trim().toLowerCase(java.util.Locale.ROOT);
+    }
+
+    private String normalizeTool(String tool) {
+        if (tool == null) return "";
+        return tool.trim().toUpperCase(Locale.ROOT);
+    }
+
+    private String detectExistingScenarioTool(File workbookFile, String sheetName) {
+        if (workbookFile == null || sheetName == null || sheetName.isBlank() || !workbookFile.exists()) return "";
+        try (FileInputStream fis = new FileInputStream(workbookFile);
+             Workbook wb = new XSSFWorkbook(fis)) {
+            int idx = wb.getSheetIndex(sheetName);
+            if (idx < 0) return "";
+            Sheet sheet = wb.getSheetAt(idx);
+            Row headerRow = sheet.getRow(0);
+            if (headerRow == null) return "";
+            List<String> headers = new ArrayList<>();
+            for (Cell cell : headerRow) {
+                if (cell != null) headers.add(cell.toString());
+            }
+            return RagScenarioGenerator.detectAssessmentTool(headers);
+        } catch (Exception ex) {
+            ragLog("Could not inspect existing scenario sheet: " + ex.getMessage());
+            return "";
+        }
     }
 
     private int findIndexByHeader(List<RagFieldRecord> ordered, String header) {
@@ -551,6 +976,33 @@ public class UIController {
             if (h.equals(header)) return i + 1; // +1 because scenario rows include Name at index 0
         }
         return -1;
+    }
+
+    private static final class PreviewBundle {
+        final String rdgKey;
+        final String rdgDisplay;
+        final TableView<Map<String, String>> table;
+        final ObservableList<Map<String, String>> rows;
+        final Label titleLabel;
+        final List<String> headers;
+        String summary;
+        String tool;
+
+        PreviewBundle(String rdgKey, String rdgDisplay, TableView<Map<String, String>> table,
+                      ObservableList<Map<String, String>> rows, Label titleLabel,
+                      List<String> headers, String summary, String tool) {
+            this.rdgKey = rdgKey;
+            this.rdgDisplay = rdgDisplay;
+            this.table = table;
+            this.rows = rows;
+            this.titleLabel = titleLabel;
+            this.headers = headers;
+            this.summary = summary;
+            this.tool = tool;
+        }
+    }
+
+    private record DependencyRuleRow(String name, String required, String mandatoryWhen, String optionalWhen, String rule) {
     }
 
     private void ragLog(String msg) {
@@ -779,9 +1231,20 @@ public class UIController {
                     && !cbRagRdg.getValue().isBlank();
             btnRagRetrieve.setDisable(!canRetrieveRag);
         }
-        if (btnRagGenerate != null) {
+        if (btnRagGenerateSpec != null) {
             boolean hasRecords = lastRagRecords != null && !lastRagRecords.isEmpty();
-            btnRagGenerate.setDisable(!hasRecords);
+            btnRagGenerateSpec.setDisable(!hasRecords);
+        }
+        if (btnRagPreviewScenarios != null) {
+            boolean hasRecords = lastRagRecords != null && !lastRagRecords.isEmpty();
+            boolean hasRdg = cbRagRdg != null && cbRagRdg.getValue() != null && !cbRagRdg.getValue().isBlank();
+            btnRagPreviewScenarios.setDisable(!(hasRecords && hasRdg));
+        }
+        if (btnRagSavePreview != null) {
+            btnRagSavePreview.setDisable(!hasScenarioPreview());
+        }
+        if (btnRagOpenPreviewWindow != null) {
+            btnRagOpenPreviewWindow.setDisable(!hasScenarioPreview());
         }
         if (btnRagWriteSheet != null) {
             boolean hasPayload = taRagOutput != null
@@ -790,9 +1253,10 @@ public class UIController {
             btnRagWriteSheet.setDisable(ragWorkbookFile == null || !hasPayload);
         }
         if (btnRagWriteScenarios != null) {
-            boolean hasRecords = lastRagRecords != null && !lastRagRecords.isEmpty();
-            btnRagWriteScenarios.setDisable(ragWorkbookFile == null || !hasRecords);
+            boolean hasData = hasScenarioPreview() || (lastRagRecords != null && !lastRagRecords.isEmpty());
+            btnRagWriteScenarios.setDisable(ragWorkbookFile == null || !hasData);
         }
+        if (btnDepLoadRules != null) btnDepLoadRules.setDisable(false);
     }
 
 

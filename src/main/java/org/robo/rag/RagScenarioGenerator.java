@@ -94,6 +94,28 @@ public final class RagScenarioGenerator {
         return filtered;
     }
 
+    public static String detectAssessmentTool(List<String> headers) {
+        if (headers == null || headers.isEmpty()) return "";
+        boolean hasFim = containsMarker(headers, FIM_MARKERS);
+        boolean hasMbi = containsMarker(headers, MBI_MARKERS);
+        if (hasFim && hasMbi) return "MIX";
+        if (hasFim) return "FIM";
+        if (hasMbi) return "MBI";
+        return "";
+    }
+
+    private static boolean containsMarker(List<String> headers, List<String> markers) {
+        for (String h : headers) {
+            String name = safe(h).toLowerCase(Locale.ROOT);
+            for (String m : markers) {
+                if (name.equals(safe(m).toLowerCase(Locale.ROOT))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static List<RagFieldRecord> filterByRdgBlocks(List<RagFieldRecord> records, String rdg) {
         if (records == null) return List.of();
         String selected = rdg == null ? "" : rdg.trim().toLowerCase(Locale.ROOT);
